@@ -18,8 +18,8 @@ namespace Formula1MyLive.Services
 		public DbSet<PitStop> PitStop { get; set; }
 		public DbSet<Qualifying> Qualifying { get; set; }
 		public DbSet<Race> Race { get; set; }
-		public DbSet<Race> Result { get; set; }
-		public DbSet<Race> Season { get; set; }
-		public DbSet<Race> Status { get; set; }
+		public DbSet<Result> Result { get; set; }
+		public DbSet<Season> Season { get; set; }
+		public DbSet<Status> Status { get; set; }
 	}
 }

@@ -1,4 +1,4 @@
-﻿using Formula1MyLive.Model;
+﻿using Formula1MyLive.Database.Model;
 using Formula1MyLive.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,11 +18,10 @@ namespace Formula1MyLive.Controllers
 
 		// GET api/values
 		[HttpGet]
-		public async Task<IEnumerable<Campaign>> Get()
+		public async Task<IEnumerable<Status>> Get()
 		{
-			//return new string[] { "value1", "value2" };
-			IEnumerable<Campaign> campaigns =await  this._dbContextService.Campaign.ToListAsync();
-			return campaigns;	
+			IEnumerable<Status> circuits =await  this._dbContextService.Status.ToListAsync();
+			return circuits;	
 		}
 
 		// GET api/values/5

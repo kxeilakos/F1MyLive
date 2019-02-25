@@ -7,7 +7,7 @@ namespace Formula1MyLive.Database.Model
 {
 	public class Constructor
 	{
-		public int Id { get; set; }
+		public Int16 Id { get; set; }
 		public string ConstructorRef { get; set; }
 		public string Name { get; set; }
 		public string Nationality { get; set; }

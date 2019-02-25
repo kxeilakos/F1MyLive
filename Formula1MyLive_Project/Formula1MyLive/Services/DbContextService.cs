@@ -1,5 +1,5 @@
 ﻿using Formula1MyLive.Interfaces;
-using Formula1MyLive.Model;
+using Formula1MyLive.Database.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace Formula1MyLive.Services

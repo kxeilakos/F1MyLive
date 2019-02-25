@@ -19,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Database\" />
     <Folder Include="Images\" />
     <Folder Include="wwwroot\Icons\" />
   </ItemGroup>

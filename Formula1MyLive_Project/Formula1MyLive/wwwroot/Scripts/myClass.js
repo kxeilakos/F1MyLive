@@ -24,7 +24,7 @@ $(function(){
         }
     }
 
-    const rex = new  Animal('Rex', 4, 'woof')
+	const rex = new Animal('Rex', 4, 'woof');
     rex.eats = 'meat';
     console.log( rex.dinner ); 
 

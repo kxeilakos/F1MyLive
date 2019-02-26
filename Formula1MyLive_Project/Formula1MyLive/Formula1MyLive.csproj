@@ -15,12 +15,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\Icons\fia-formula-1-world-championship-logo.png" />
     <None Include="wwwroot\Scripts\myClass.js" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Images\" />
-    <Folder Include="wwwroot\Icons\" />
   </ItemGroup>
 
 </Project>

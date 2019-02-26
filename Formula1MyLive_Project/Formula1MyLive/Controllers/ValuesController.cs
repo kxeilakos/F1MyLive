@@ -18,9 +18,9 @@ namespace Formula1MyLive.Controllers
 
 		// GET api/values
 		[HttpGet]
-		public async Task<IEnumerable<Status>> Get()
+		public async Task<IEnumerable<Circuit>> Get()
 		{
-			IEnumerable<Status> circuits =await  this._dbContextService.Status.ToListAsync();
+			IEnumerable<Circuit> circuits =await  this._dbContextService.Circuit.ToListAsync();
 			return circuits;	
 		}
 

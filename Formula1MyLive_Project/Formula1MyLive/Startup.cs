@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Newtonsoft.Json.Serialization;
 using System.IO;
 
 namespace Formula1MyLive
@@ -27,7 +28,8 @@ namespace Formula1MyLive
 		{
 			services.Configure<DatabaseConfiguration>(this.Configuration.GetSection("Database")).PostConfigure<DatabaseConfiguration>(o => o.Validate());
 			services.AddDbContext<DbContextService>(options => options.UseSqlServer(this.Configuration.GetSection("Database:ConnectionString").Value));
-			services.AddMvc();
+			services.AddMvc()
+				.AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 		}	
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

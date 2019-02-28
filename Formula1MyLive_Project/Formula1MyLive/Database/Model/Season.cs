@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace Formula1MyLive.Database.Model
 	{
 		[Key]
 		public Int16 Year { get; set; }
+
 		public string Url { get; set; }
 	}
 }

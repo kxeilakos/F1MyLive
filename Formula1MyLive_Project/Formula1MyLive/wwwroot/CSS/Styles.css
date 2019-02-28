@@ -77,7 +77,14 @@
 	background: url('../Icons/f1 car1.svg');
 	cursor: pointer;
 }
-.footer{
+.selStartImg:hover {
+	transform: scale(1.2);
+}
+.selStartBt:hover {
+	font-weight:700;
+}
+
+.footer {
 	position: absolute;
 	bottom: 0;
 	width: 100%;

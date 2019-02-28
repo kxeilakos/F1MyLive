@@ -15,9 +15,10 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
-	<script src="Scripts/myClass.js"></script>
+	<script src="Scripts/buildDropDowns.js"></script>
+	<script src="Scripts/ajaxCalls.js"></script>
+	<script src="Scripts/startup.js"></script>
 	<link rel="stylesheet" type="text/css" href="./CSS/Styles.css">
-
 
 </head>
 	<body>
@@ -55,10 +56,7 @@
 							<h5>Season</h5>
 							<div class="form-group">
 								<select class="form-control" id="selSeason">
-									<option>2019</option>
-									<option>2018</option>
-									<option>2017</option>
-									<option>2016</option>
+									
 								</select>
 							</div>
 						</div>
@@ -69,10 +67,7 @@
 							<h5>Circuit</h5>
 							<div class="form-group">
 								<select class="form-control" id="selCircuit">
-									<option>Abu Dhabi</option>
-									<option>Silverstone</option>
-									<option>Brazil</option>
-									<option>Suzuka</option>
+										
 								</select>
 							</div>
 						</div>
@@ -83,10 +78,7 @@
 							<h5>Constructor</h5>
 							<div class="form-group">
 								<select class="form-control" id="selConstructor">
-									<option>Mac Laren</option>
-									<option>Ferrari</option>
-									<option>Lotus</option>
-									<option>Redbull</option>
+									
 								</select>
 							</div>
 						</div>
@@ -97,10 +89,7 @@
 							<h5>Driver</h5>
 							<div class="form-group">
 								<select class="form-control" id="selDriver">
-									<option>Lewis Hamilton</option>
-									<option>Botas</option>
-									<option>Webber</option>
-									<option>Ricardo</option>
+									
 								</select>
 							</div>
 						</div>
@@ -121,8 +110,8 @@
 					</div>
 					<div class="row marginBtm1">
 						<div class="col-md-12 cursorPointer" id="selStart">
-							<img class="settingsImg" src="./Icons/lights.svg" />
-							<h5>Start</h5>
+							<img class="settingsImg selStartImg" src="./Icons/lights.svg" />
+							<h5 class="selStartBt">Start</h5>
 						</div>
 					</div>
 				</div>
@@ -145,7 +134,6 @@
 								<thead class="thead-dark">
 									<tr>
 										<th scope="col">P</th>
-										<th scope="col">#</th>
 										<th scope="col">Status</th>
 										<th scope="col">Driver</th>
 										<th scope="col">Team</th>
@@ -153,34 +141,16 @@
 										<th scope="col">Lap</th>
 									</tr>
 								</thead>
-								<tbody>
+								<tbody id="liveTimingList">
 									<tr>
 										<th scope="row">1</th>
-										<td>20</td>
 										<td> </td>
 										<td>Lewis Hamilton</td>
 										<td>Ferrari</td>
 										<td>1:24:345</td>
 										<td>7</td>
 									</tr>
-									<tr>
-										<th scope="row">2</th>
-										<td>15</td>
-										<td> </td>
-										<td>Webber</td>
-										<td>Mc Laren</td>
-										<td>1:22:445</td>
-										<td>2</td>
-									</tr>
-									<tr>
-										<th scope="row">3</th>
-										<td>19</td>
-										<td> </td>
-										<td>Botas</td>
-										<td>Red Bull</td>
-										<td>1:23:567</td>
-										<td>7</td>
-									</tr>
+									
 								</tbody>
 							</table>
 						</div>
@@ -194,7 +164,7 @@
 						</div>
 					</div>
 					<div class="row">
-						<ul style="list-style:none" class="marginTop1">
+						<ul style="list-style:none" class="marginTop1" id="raceEventsList">
 							<li><span style="font-weight:600" class="marginBtm1">Lap 4: </span>Hamilton ovetakes Botas</li>
 							<li><span style="font-weight:600" class="marginBtm1">Lap 6: </span>Ricardo ovetakes Webber</li>
 							<li><span style="font-weight:600" class="marginBtm1">Lap 6: </span>Hamilton Pit Stop</li>
@@ -203,8 +173,8 @@
 				</div>
 			</div>
 		</div>
-		<footer class="footer">
+		<!--<footer class="footer">
 			<p class="text-muted">F1 MyLive 2019 All rights Reserved</p>
-		</footer>
+		</footer>-->
 	</body>
 </html>

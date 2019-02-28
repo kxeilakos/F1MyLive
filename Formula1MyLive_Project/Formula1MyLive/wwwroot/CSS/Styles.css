@@ -95,3 +95,9 @@
 	color: #777;
 	text-align:center;
 }
+.colorClassUp{
+	color:forestgreen;
+}
+.colorClassDown {
+	color:orangered;
+}

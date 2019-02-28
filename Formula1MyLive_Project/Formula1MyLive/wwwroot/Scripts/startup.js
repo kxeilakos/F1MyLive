@@ -1,9 +1,11 @@
 var lapTimesByLap = null;
+var selectedCircuit = null;
+var selectedSeason = null;
 
 var positionStatus = {
-	Up: '0',
-	Down: '1',
-	NoChange: '2'
+	Up: 0,
+	Down: 1,
+	NoChange: 2
 };
 
 $(document).ready(function () {
@@ -80,15 +82,28 @@ function startLiveTiming() {
 	CallWS("POST", url, "json", request, "application/json;charset = utf - 8", populateLiveTimingTable);
 }
 
-function populateLiveTimingTable(data) {
-	this.lapTimesByLap = data;
+function timer(ms) {
+	return new Promise(res => setTimeout(res, ms));
+}
 
-	var startingGrid = data[1];
-	var tableBody = $('#liveTimingList');
-	for (var i = 0; i < startingGrid.length; i++) {
-		var row = generateLiveTimingTableRow(startingGrid[i]);
-		tableBody.append(row);
+async function populateLiveTimingTable(data) {
+	this.lapTimesByLap = data;
+	for (var prop in data) {
+		var startingGrid = data[prop];
+		clearTable();
+		var tableBody = $('#liveTimingList');
+		for (var i = 0; i < startingGrid.length; i++) {
+			var row = generateLiveTimingTableRow(startingGrid[i]);
+			tableBody.append(row);
+		}
+		await timer(3000);
 	}
+}
+
+function myLoop() {
+	setTimeout(function () {
+
+	});
 }
 
 function generateLiveTimingTableRow(rowData) {
@@ -97,7 +112,8 @@ function generateLiveTimingTableRow(rowData) {
 	var th = $('<th scope="row">');
 	th.append(rowData.Position);
 	var tdPositionStatus = $('<td>');
-	tdPositionStatus.append(rowData.PositionStatus);
+	var positionStatusIcon = getPositionStatusIcon(rowData.PositionStatus);
+	tdPositionStatus.append(positionStatusIcon);
 	var tdDriverName = $('<td>');
 	tdDriverName.append(rowData.DriverName);
 	var tdConstructorName = $('<td>');
@@ -107,7 +123,6 @@ function generateLiveTimingTableRow(rowData) {
 	var tdLap = $('<td>');
 	tdLap.append(rowData.Lap);
 	row.append(th);
-	row.append(tdNumber);
 	row.append(tdPositionStatus);
 	row.append(tdDriverName);
 	row.append(tdConstructorName);
@@ -115,6 +130,33 @@ function generateLiveTimingTableRow(rowData) {
 	row.append(tdLap);
 
 	return row;
+}
+
+function getPositionStatusIcon(positionStatus) {
+	var iconClass = '';
+	var colorClass = '';
+	switch (positionStatus) {
+		case this.positionStatus.Up:
+			iconClass = "fa fa-arrow-up";
+			colorClass = "colorClassUp";
+			break;
+		case this.positionStatus.Down:
+			iconClass = "fa fa-arrow-down";
+			colorClass = "colorClassDown";
+			break;
+		case this.positionStatus.NoChange:
+			iconClass = "fa fa-minus";
+			break;
+		default:
+			iconClass = "fa fa-minus";
+			break;
+	}
+
+	var iconSpan = $('<i>');
+	iconSpan.addClass(iconClass);
+	if (colorClass && colorClass.length > 0) iconSpan.addClass(colorClass);
+
+	return iconSpan;
 }
 
 //Get settings

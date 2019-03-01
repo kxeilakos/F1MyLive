@@ -17,6 +17,8 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 	<script src="Scripts/buildDropDowns.js"></script>
+	<script src="Scripts/utilities.js"></script>
+	<script src="Scripts/liveTimingList.js"></script>
 	<script src="Scripts/ajaxCalls.js"></script>
 	<script src="Scripts/startup.js"></script>
 	<link rel="stylesheet" type="text/css" href="./CSS/Styles.css">
@@ -101,10 +103,10 @@
 							<h5>Animation Speed</h5>
 							<div class="form-group">
 								<select class="form-control" id="selSpeedAnm">
-									<option>Slow</option>
-									<option>Normal</option>
-									<option>Fast</option>
-									<option>TopSpeed</option>
+									<option value="0">Slow</option>
+									<option value="1">Normal</option>
+									<option value="2">Fast</option>
+									<option value="3">TopSpeed</option>
 								</select>
 							</div>
 						</div>
@@ -118,15 +120,26 @@
 				</div>
 				<div class="col-sm-8" style="background-color:antiquewhite">
 					<div class="row marginTop1">
-						<div class="col-sm-3 marginBtm1">
+						<div class="col-sm-2 marginBtm1">
 							<img class="settingsImg" src="./Icons/live timing.svg" />
 							<h5>Live Timing</h5>
 						</div>
-						<div class="col-sm-9">
+						<div class="col-sm-2 cursorPointer" id="playBackControls">
+							<i class="fa fa-fast-backward marginRight1"></i>
+							<i class="fa fa-play marginRight1"></i>
+							<i class="fa fa-pause marginRight1"></i>
+							<i class="fa fa-fast-forward"></i>
+						</div>
+						<div class="col-sm-8">
 							<div class="cursorPointer progressBarCstmHght">
-								<input type="range" class="slider slider-pic" id="customRange1">
-								<h6>Lap: <span id="selLapSlider">6</span></h6>
+								<input type="range" class="slider slider-pic" id="rangeSlider">
+								<h6>Lap: <span id="selLapSlider"></span></h6>
 							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12 marginBtm1">
+							<span id="labelStatus" class="marginLeft1"> </span>
 						</div>
 					</div>
 					<div class="row liveTimingTable">
@@ -142,21 +155,11 @@
 										<th scope="col">Lap</th>
 									</tr>
 								</thead>
-								<tbody id="liveTimingList">
-									<tr>
-										<th scope="row">1</th>
-										<td> </td>
-										<td>Lewis Hamilton</td>
-										<td>Ferrari</td>
-										<td>1:24:345</td>
-										<td>7</td>
-									</tr>
-									
-								</tbody>
+								<tbody id="liveTimingList"></tbody>
 							</table>
 						</div>
 					</div>
-				</div>
+					</div>
 				<div class="col-sm-2" style="background-color:#e9ecef;">
 					<div class="row marginTop1">
 						<div class="col-md-12">

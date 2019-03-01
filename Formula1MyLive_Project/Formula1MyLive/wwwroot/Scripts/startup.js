@@ -123,14 +123,13 @@ $(document).ready(function () {
 	});
 	//8. Range slider
 	var slider = $('#rangeSlider');
-	slider.on('slide', function (ev) {
+	slider.on('change',  function () {
 		if (raceInProgress) {
 			handleStatusLabel("Please stop the race first and try again.", "colorClassData");
 			return;
 		}
 		handleLapLabel(this.value);
 	});
-
 });
 
 //Update DropDowns on selection

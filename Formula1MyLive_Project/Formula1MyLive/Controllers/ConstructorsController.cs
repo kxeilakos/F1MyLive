@@ -29,12 +29,12 @@ namespace Formula1MyLive.Controllers
 		[HttpPost]
 		public IEnumerable<Constructor> GetConstructorsOfCircuit([FromBody]Request request)
 		{
-			IEnumerable<Race> races = this._dbContextService.Race.ToList();
+			IEnumerable<Race> racesOfCircuit = this._dbContextService.Race.Where(x => x.CircuitId == request.CircuitId && x.Year == request.Year).OrderBy(x => x.Date).ToList();
 
-			IEnumerable<Race> racesOfCircuit = races.Where(x => x.CircuitId == request.CircuitId && x.Year == request.Year).OrderBy(x => x.Date);
+			//IEnumerable<Race> racesOfCircuit = races.Where(x => x.CircuitId == request.CircuitId && x.Year == request.Year).OrderBy(x => x.Date);
 			IEnumerable<Int16> raceIdsOfCircuit = racesOfCircuit.Select(x => x.Id);
 
-			IEnumerable<Result> resultsOfRace = this._dbContextService.Result.ToList().Where(x => raceIdsOfCircuit.Contains(x.RaceId));
+			IEnumerable<Result> resultsOfRace = this._dbContextService.Result.Where(x => raceIdsOfCircuit.Contains(x.RaceId));
 
 			IEnumerable<Int16> driverIdsIds = resultsOfRace.Select(x => x.ConstructorId).ToList();
 

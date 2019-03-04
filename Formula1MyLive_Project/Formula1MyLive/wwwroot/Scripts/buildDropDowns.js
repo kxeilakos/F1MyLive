@@ -6,6 +6,8 @@ var buildSeasonsDrDn = function (seasons) {
 		var option = "<option value = '" + item.Year + "'>" + item.Year + "</option>";
 		element.append(option);
 	});
+
+	//updateSeasonFromLocalStorage();
 };
 
 //Circuits of Year
@@ -16,6 +18,8 @@ var buildCircuitsDrDn = function (circuits) {
 		var option = "<option value = '" + item.Id + "'>" + item.Name + "</option>";
 		element.append(option);
 	});
+
+	//updateCircuitFromLocalStorage();
 };
 
 //Drivers of Circuit

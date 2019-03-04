@@ -12,5 +12,8 @@ namespace Formula1MyLive.Database.Model
 		public PositionStatus PositionStatus { get; set; }
 		public string DriverName { get; set; }
 		public string DriverNumber { get; set; }
+		public bool HasPitstop { get; set; }
+		public string RaceStatus { get; set; }
+		public short RaceStatusId { get; set; }
 	}
 }

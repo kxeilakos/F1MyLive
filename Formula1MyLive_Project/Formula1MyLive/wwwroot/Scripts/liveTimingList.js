@@ -16,7 +16,7 @@ function timer(ms) {
 
 async function populateLiveTimingTable(data) {
 	handleStatusLabel("", "");
-	$('#playBackControls').show();
+	togglePlayBackControls(true);
 
 	if (data !== null) {
 		lapTimesByLap = data;
@@ -33,20 +33,41 @@ async function populateLiveTimingTable(data) {
 			//break;
 			return;
 		}
-		if (prop < currentLap) continue;
+		if (+prop < +currentLap) continue;
 
-		var startingGrid = lapTimesByLap[prop];
+		var driversList = lapTimesByLap[prop];
 		clearTable();
+
 		var tableBody = $('#liveTimingList');
-		for (var i = 0; i < startingGrid.length; i++) {
-			var row = generateLiveTimingTableRow(startingGrid[i]);
+		var raceListEvents = $('#raceEventsList');
+
+		for (var i = 0; i < driversList.length; i++) {
+			var rowData = driversList[i];
+
+			var row = generateLiveTimingTableRow(rowData);
+			if (rowData.HasPitstop) {
+				var pitStopItem = generateRaceEventsListPitStopItem(rowData);
+				raceListEvents.append(pitStopItem);
+			}
+			if (rowData.RaceStatus && rowData.RaceStatus.length>0) {
+				var raceStatusItem = generateRaceEventsListStatusItem(rowData);
+				raceListEvents.append(raceStatusItem);
+			}
+
 			tableBody.append(row);
+			
 		}
 		handleLapLabel(prop);
 		moveSliderToLap(prop);
 		raceInProgress = true;
-
+		
 		await timer(interval);
+
+		if(+prop === totalLaps) {
+			stop = true;
+			raceInProgress = false;
+			handleStatusLabel("Race finished", "colorClassData");
+		}
 	}
 }
 
@@ -116,4 +137,50 @@ function getInterval() {
 		default:
 			return 3000;
 	}
+}
+
+//Race Events List
+function generateRaceEventsListPitStopItem(rowData) {
+	var eventIcon = $('<img>');
+	eventIcon.attr("src", "./Icons/pit-stop.svg");
+	eventIcon.addClass("imgPitStop");
+	eventIcon.addClass("marginRight1");
+
+	var lapLabel = "Lap " + rowData.Lap + ": ";
+	var pitStopLabel = rowData.DriverName;
+	var li = $('<li>');
+	var span = $('<span>');
+	span.addClass("eventsListPitStopItem");
+	span.addClass("marginBtm1");
+	span.append(lapLabel);
+	li.append(eventIcon);
+	li.append(span);
+	li.append(pitStopLabel);
+
+	return li;
+}
+
+function generateRaceEventsListStatusItem(rowData) {
+	var eventIcon = $('<img>');
+	if (rowData.RaceStatusId === 1) {
+		eventIcon.attr("src", "./Icons/racing-flag.svg");
+	} else {
+		eventIcon.attr("src", "./Icons/warning.svg");
+	}
+	eventIcon.addClass("imgPitStop");
+	eventIcon.addClass("marginRight1");
+
+	var lapLabel = "Lap " + rowData.Lap + ": ";
+	var statusLabel = rowData.DriverName + ", " + rowData.RaceStatus;
+	var li = $('<li>');
+	var span = $('<span>');
+	span.addClass("eventsListPitStopItem");
+	span.addClass("marginBtm1");
+	span.append(lapLabel);
+
+	li.append(eventIcon);
+	li.append(span);
+	li.append(statusLabel);
+
+	return li;
 }

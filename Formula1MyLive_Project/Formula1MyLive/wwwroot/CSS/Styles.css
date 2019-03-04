@@ -128,4 +128,14 @@
 .colorClassData {
 	color:orange;
 }
+.eventsListPitStopItem {
+	font-weight: 600;
+}
+.imgPitStop{
+	width: 2.5em;
+}
+.raceEventsList{
+	margin-left: -2em;
+}
+
 

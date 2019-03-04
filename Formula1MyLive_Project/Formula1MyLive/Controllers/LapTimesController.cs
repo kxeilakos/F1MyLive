@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Formula1MyLive.Controllers
@@ -16,6 +17,10 @@ namespace Formula1MyLive.Controllers
 		private readonly DbContextService _dbContextService;
 		private Dictionary<Int16, Constructor> Constructors { get; set; }
 		private Dictionary<Int16, Driver> Drivers { get; set; }
+		private Dictionary<Int16, Status> Statuses { get; set; }
+		private List<Result> Results { get; set; }
+		private List<PitStop> Pitstops { get; set; }
+
 		Dictionary<short, IOrderedEnumerable<LapTimeWithQualifiersAndConstructors>> LapTimesByLap { get; set; }
 
 		public LapTimesController(DbContextService dbContextService)
@@ -33,9 +38,9 @@ namespace Formula1MyLive.Controllers
 		[HttpPost]
 		public Dictionary<short, IOrderedEnumerable<LapTimeWithQualifiersAndConstructors>> GetLapTimesOfRace([FromBody]Request request)
 		{
-			IEnumerable<Race> races = this._dbContextService.Race.ToList();
+			IEnumerable<Race> racesOfCircuit = this._dbContextService.Race.Where(x => x.CircuitId == request.CircuitId && x.Year == request.Year).ToList();
+			//IEnumerable<Race> racesOfCircuit = races.Where(x => x.CircuitId == request.CircuitId && x.Year == request.Year).OrderBy(x => x.Date);
 
-			IEnumerable<Race> racesOfCircuit = races.Where(x => x.CircuitId == request.CircuitId && x.Year == request.Year).OrderBy(x => x.Date);
 			IEnumerable<Int16> raceIdsOfCircuit = racesOfCircuit.Select(x => x.Id);
 
 			IEnumerable<LapTime> lapTimes = this._dbContextService.LapTime.Where(x => raceIdsOfCircuit.Contains(x.RaceId));
@@ -43,6 +48,9 @@ namespace Formula1MyLive.Controllers
 
 			this.Constructors = this._dbContextService.Constructor.ToDictionary(x => x.Id);
 			this.Drivers = this._dbContextService.Driver.ToDictionary(x => x.Id);
+			this.Statuses = this._dbContextService.Status.ToDictionary(x => x.Id);
+			this.Results = this._dbContextService.Result.Where(x => raceIdsOfCircuit.Contains(x.RaceId)).ToList();
+			this.Pitstops = this._dbContextService.PitStop.Where(x => raceIdsOfCircuit.Contains(x.RaceId)).ToList();
 
 			this.LapTimesByLap = GetLapTimesByLap(lapTimes, qualifyings);
 
@@ -101,6 +109,7 @@ namespace Formula1MyLive.Controllers
 				Constructor constructor = null;
 				Constructors.TryGetValue(lapTimeWithQualifiersAndConstructors.ConstructorId, out constructor);
 				lapTimeWithQualifiersAndConstructors.ConstructorName = constructor == null ? string.Empty : constructor.Name;
+				lapTimeWithQualifiersAndConstructors.HasPitstop = false;
 
 				collection.Add(lapTimeWithQualifiersAndConstructors);
 			}
@@ -125,6 +134,11 @@ namespace Formula1MyLive.Controllers
 				Constructor constructor = null;
 				this.Constructors.TryGetValue(lapTimeWithQualifiersAndConstructors.ConstructorId, out constructor);
 				lapTimeWithQualifiersAndConstructors.ConstructorName = constructor == null ? string.Empty : constructor.Name;
+
+				short raceStatusId = -1;
+				lapTimeWithQualifiersAndConstructors.HasPitstop = CheckPitStopForLapAndDriverOfRace(lapTimeWithQualifiersAndConstructors.DriverId, lapTimeWithQualifiersAndConstructors.Lap);
+				lapTimeWithQualifiersAndConstructors.RaceStatus = CheckResultForLapAndDriverOfRace(lapTimeWithQualifiersAndConstructors.DriverId, lapTimeWithQualifiersAndConstructors.Lap, out raceStatusId);
+				lapTimeWithQualifiersAndConstructors.RaceStatusId = raceStatusId;
 
 				collection.Add(lapTimeWithQualifiersAndConstructors);
 
@@ -156,6 +170,30 @@ namespace Formula1MyLive.Controllers
 			return lapTimesByLap;
 		}
 
+		private bool CheckPitStopForLapAndDriverOfRace(short driverId, short lap)
+		{
+			return this.Pitstops.Where(x => x.DriverId == driverId && x.Lap == lap).Any();
+		}
+
+		private string CheckResultForLapAndDriverOfRace(short driverId, short lap, out short statusId)
+		{
+			Result resultsOfLapAndDriver = this.Results.Where(x => x.DriverId == driverId && x.Laps == lap).FirstOrDefault();
+			StringBuilder builder = new StringBuilder();
+			statusId = -1;
+			if(resultsOfLapAndDriver != null)
+			{
+				Status status = null;
+				if (resultsOfLapAndDriver.StatusId.HasValue)
+				{
+					this.Statuses.TryGetValue(resultsOfLapAndDriver.StatusId.Value, out status);
+					statusId = resultsOfLapAndDriver.StatusId.Value;
+					builder.Append(status.Label.Trim());
+					builder.Append(" ");
+				}
+			}
+
+			return builder.ToString();
+		}
 		#endregion
 	}
 }

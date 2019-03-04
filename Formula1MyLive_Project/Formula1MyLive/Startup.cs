@@ -45,13 +45,7 @@ namespace Formula1MyLive
 			app.UseDefaultFiles(options);
 
 			app.UseStaticFiles();
-			app.UseStaticFiles(new StaticFileOptions()
-			{
-				FileProvider = new PhysicalFileProvider(
-							Path.Combine(Directory.GetCurrentDirectory(), @"Images")),
-				RequestPath = new PathString("/app-images")
-			});
-
+			
 			app.UseMvc(routes=> routes.MapRoute(name: "default", template: "{controller=values}/{action=Get}/{id?}"));
 		}
 	}

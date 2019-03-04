@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Formula1MyLive.Database.Model
 {
-	public class LapTimeWithQualifiersAndConstructors: LapTime
+	public class LapTimeWithEvents: LapTime
 	{
 		public Int16 ConstructorId { get; set; }
 		public string ConstructorName { get; set; }

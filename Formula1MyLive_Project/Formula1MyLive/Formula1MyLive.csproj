@@ -19,8 +19,4 @@
     <None Include="wwwroot\Scripts\startup.js" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Images\" />
-  </ItemGroup>
-
 </Project>

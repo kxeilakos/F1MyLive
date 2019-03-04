@@ -21,7 +21,7 @@ namespace Formula1MyLive.Controllers
 		private List<Result> Results { get; set; }
 		private List<PitStop> Pitstops { get; set; }
 
-		Dictionary<short, IOrderedEnumerable<LapTimeWithQualifiersAndConstructors>> LapTimesByLap { get; set; }
+		Dictionary<short, IOrderedEnumerable<LapTimeWithEvents>> LapTimesByLap { get; set; }
 
 		public LapTimesController(DbContextService dbContextService)
 		{	
@@ -36,7 +36,7 @@ namespace Formula1MyLive.Controllers
 		}
 
 		[HttpPost]
-		public Dictionary<short, IOrderedEnumerable<LapTimeWithQualifiersAndConstructors>> GetLapTimesOfRace([FromBody]Request request)
+		public Dictionary<short, IOrderedEnumerable<LapTimeWithEvents>> GetLapTimesOfRace([FromBody]Request request)
 		{
 			IEnumerable<Race> racesOfCircuit = this._dbContextService.Race.Where(x => x.CircuitId == request.CircuitId && x.Year == request.Year).ToList();
 			//IEnumerable<Race> racesOfCircuit = races.Where(x => x.CircuitId == request.CircuitId && x.Year == request.Year).OrderBy(x => x.Date);
@@ -74,79 +74,79 @@ namespace Formula1MyLive.Controllers
 			return ConstructorId;
 		}
 
-		private Dictionary<short, IOrderedEnumerable<LapTimeWithQualifiersAndConstructors>> GetLapTimesByLap(IEnumerable<LapTime> lapTimes, IEnumerable<Qualifying> qualifyings)
+		private Dictionary<short, IOrderedEnumerable<LapTimeWithEvents>> GetLapTimesByLap(IEnumerable<LapTime> lapTimes, IEnumerable<Qualifying> qualifyings)
 		{
-			List<LapTimeWithQualifiersAndConstructors> collection = new List<LapTimeWithQualifiersAndConstructors>();
+			List<LapTimeWithEvents> collection = new List<LapTimeWithEvents>();
 			IEnumerable<Int16> constructorIds = qualifyings.Select(x => x.ConstructorId).Distinct();
 
 			foreach(Qualifying qualifying in qualifyings.OrderBy(x=> x.Position))
 			{
 
-				LapTimeWithQualifiersAndConstructors lapTimeWithQualifiersAndConstructors = new LapTimeWithQualifiersAndConstructors();
-				lapTimeWithQualifiersAndConstructors.Id = qualifying.Id;
-				lapTimeWithQualifiersAndConstructors.RaceId = qualifying.RaceId;
+				LapTimeWithEvents LapTimeWithEvents = new LapTimeWithEvents();
+				LapTimeWithEvents.Id = qualifying.Id;
+				LapTimeWithEvents.RaceId = qualifying.RaceId;
 				Driver driver = null;
 				Drivers.TryGetValue(qualifying.DriverId, out driver);
-				lapTimeWithQualifiersAndConstructors.DriverName = driver == null ? string.Empty : driver.FirstName + " " + driver.LastName;
-				lapTimeWithQualifiersAndConstructors.DriverNumber = driver == null ? string.Empty : driver.Number.ToString();
-				lapTimeWithQualifiersAndConstructors.DriverId = qualifying.DriverId;
-				lapTimeWithQualifiersAndConstructors.Lap = 0;
-				lapTimeWithQualifiersAndConstructors.Position = qualifying.Position;
-				lapTimeWithQualifiersAndConstructors.PositionStatus = PositionStatus.NoChange;
+				LapTimeWithEvents.DriverName = driver == null ? string.Empty : driver.FirstName + " " + driver.LastName;
+				LapTimeWithEvents.DriverNumber = driver == null ? string.Empty : driver.Number.ToString();
+				LapTimeWithEvents.DriverId = qualifying.DriverId;
+				LapTimeWithEvents.Lap = 0;
+				LapTimeWithEvents.Position = qualifying.Position;
+				LapTimeWithEvents.PositionStatus = PositionStatus.NoChange;
 				if (qualifying.Q1 != null)
 				{
-					lapTimeWithQualifiersAndConstructors.Time = qualifying.Q1;
+					LapTimeWithEvents.Time = qualifying.Q1;
 				}
 				else if(qualifying.Q2 != null)
 				{
-					lapTimeWithQualifiersAndConstructors.Time = qualifying.Q2;
+					LapTimeWithEvents.Time = qualifying.Q2;
 				}
 				else
 				{
-					lapTimeWithQualifiersAndConstructors.Time = qualifying.Q3;
+					LapTimeWithEvents.Time = qualifying.Q3;
 				}
-				lapTimeWithQualifiersAndConstructors.ConstructorId = qualifying.ConstructorId;
+				LapTimeWithEvents.ConstructorId = qualifying.ConstructorId;
 				Constructor constructor = null;
-				Constructors.TryGetValue(lapTimeWithQualifiersAndConstructors.ConstructorId, out constructor);
-				lapTimeWithQualifiersAndConstructors.ConstructorName = constructor == null ? string.Empty : constructor.Name;
-				lapTimeWithQualifiersAndConstructors.HasPitstop = false;
+				Constructors.TryGetValue(LapTimeWithEvents.ConstructorId, out constructor);
+				LapTimeWithEvents.ConstructorName = constructor == null ? string.Empty : constructor.Name;
+				LapTimeWithEvents.HasPitstop = false;
 
-				collection.Add(lapTimeWithQualifiersAndConstructors);
+				collection.Add(LapTimeWithEvents);
 			}
 
 			foreach(LapTime lapTime in lapTimes)
 			{
-				LapTimeWithQualifiersAndConstructors lapTimeWithQualifiersAndConstructors = new LapTimeWithQualifiersAndConstructors();
-				lapTimeWithQualifiersAndConstructors.Id = lapTime.Id;
-				lapTimeWithQualifiersAndConstructors.RaceId = lapTime.RaceId;
-				lapTimeWithQualifiersAndConstructors.DriverId = lapTime.DriverId;
+				LapTimeWithEvents LapTimeWithEvents = new LapTimeWithEvents();
+				LapTimeWithEvents.Id = lapTime.Id;
+				LapTimeWithEvents.RaceId = lapTime.RaceId;
+				LapTimeWithEvents.DriverId = lapTime.DriverId;
 
 				Driver driver = null;
-				Drivers.TryGetValue(lapTimeWithQualifiersAndConstructors.DriverId, out driver);
-				lapTimeWithQualifiersAndConstructors.DriverName = driver == null ? string.Empty : driver.FirstName + " " + driver.LastName;
-				lapTimeWithQualifiersAndConstructors.DriverNumber = driver == null ? string.Empty : driver.Number.ToString();
+				Drivers.TryGetValue(LapTimeWithEvents.DriverId, out driver);
+				LapTimeWithEvents.DriverName = driver == null ? string.Empty : driver.FirstName + " " + driver.LastName;
+				LapTimeWithEvents.DriverNumber = driver == null ? string.Empty : driver.Number.ToString();
 
-				lapTimeWithQualifiersAndConstructors.Lap = lapTime.Lap;
-				lapTimeWithQualifiersAndConstructors.Position = lapTime.Position;
-				lapTimeWithQualifiersAndConstructors.Time = lapTime.Time;
+				LapTimeWithEvents.Lap = lapTime.Lap;
+				LapTimeWithEvents.Position = lapTime.Position;
+				LapTimeWithEvents.Time = lapTime.Time;
 
-				lapTimeWithQualifiersAndConstructors.ConstructorId = GetConstructorId(qualifyings, lapTimeWithQualifiersAndConstructors.DriverId);
+				LapTimeWithEvents.ConstructorId = GetConstructorId(qualifyings, LapTimeWithEvents.DriverId);
 				Constructor constructor = null;
-				this.Constructors.TryGetValue(lapTimeWithQualifiersAndConstructors.ConstructorId, out constructor);
-				lapTimeWithQualifiersAndConstructors.ConstructorName = constructor == null ? string.Empty : constructor.Name;
+				this.Constructors.TryGetValue(LapTimeWithEvents.ConstructorId, out constructor);
+				LapTimeWithEvents.ConstructorName = constructor == null ? string.Empty : constructor.Name;
 
 				short raceStatusId = -1;
-				lapTimeWithQualifiersAndConstructors.HasPitstop = CheckPitStopForLapAndDriverOfRace(lapTimeWithQualifiersAndConstructors.DriverId, lapTimeWithQualifiersAndConstructors.Lap);
-				lapTimeWithQualifiersAndConstructors.RaceStatus = CheckResultForLapAndDriverOfRace(lapTimeWithQualifiersAndConstructors.DriverId, lapTimeWithQualifiersAndConstructors.Lap, out raceStatusId);
-				lapTimeWithQualifiersAndConstructors.RaceStatusId = raceStatusId;
+				LapTimeWithEvents.HasPitstop = CheckPitStopForLapAndDriverOfRace(LapTimeWithEvents.DriverId, LapTimeWithEvents.Lap);
+				LapTimeWithEvents.RaceStatus = CheckResultForLapAndDriverOfRace(LapTimeWithEvents.DriverId, LapTimeWithEvents.Lap, out raceStatusId);
+				LapTimeWithEvents.RaceStatusId = raceStatusId;
 
-				collection.Add(lapTimeWithQualifiersAndConstructors);
+				collection.Add(LapTimeWithEvents);
 
 			}
 
 			//Calculate PositionStatus for each driver
-			Dictionary<short, IOrderedEnumerable<LapTimeWithQualifiersAndConstructors>> lapTimesByDriver = collection.GroupBy(x => x.DriverId).ToDictionary(t => t.Key, t => t.Select(r => r).OrderBy(x => x.Lap));
-			foreach (KeyValuePair<short, IOrderedEnumerable<LapTimeWithQualifiersAndConstructors>> keyValuePair in lapTimesByDriver)
+			Dictionary<short, IOrderedEnumerable<LapTimeWithEvents>> lapTimesByDriver = collection.GroupBy(x => x.DriverId).ToDictionary(t => t.Key, t => t.Select(r => r).OrderBy(x => x.Lap));
+			foreach (KeyValuePair<short, IOrderedEnumerable<LapTimeWithEvents>> keyValuePair in lapTimesByDriver)
 			{
 				var lapTimesOfDriver = keyValuePair.Value.ToArray();
 				for (int i = 1; i < lapTimesOfDriver.Length - 1; i++)
@@ -166,7 +166,7 @@ namespace Formula1MyLive.Controllers
 				}
 			}
 
-			Dictionary<short, IOrderedEnumerable<LapTimeWithQualifiersAndConstructors>> lapTimesByLap = collection.GroupBy(x => x.Lap).ToDictionary(t => t.Key, t => t.Select(r => r).OrderBy(x => x.Position));
+			Dictionary<short, IOrderedEnumerable<LapTimeWithEvents>> lapTimesByLap = collection.GroupBy(x => x.Lap).ToDictionary(t => t.Key, t => t.Select(r => r).OrderBy(x => x.Position));
 			return lapTimesByLap;
 		}
 

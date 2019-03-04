@@ -153,6 +153,7 @@ function generateRaceEventsListPitStopItem(rowData) {
 	span.addClass("eventsListPitStopItem");
 	span.addClass("marginBtm1");
 	span.append(lapLabel);
+	li.addClass("marginRight1");
 	li.append(eventIcon);
 	li.append(span);
 	li.append(pitStopLabel);
@@ -177,7 +178,7 @@ function generateRaceEventsListStatusItem(rowData) {
 	span.addClass("eventsListPitStopItem");
 	span.addClass("marginBtm1");
 	span.append(lapLabel);
-
+	li.addClass("marginRight1");
 	li.append(eventIcon);
 	li.append(span);
 	li.append(statusLabel);

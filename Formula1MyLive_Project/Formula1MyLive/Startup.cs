@@ -1,17 +1,14 @@
-﻿using Formula1MyLive.Configuration.Database;
+﻿using Formula1MyLive.Configuration;
 using Formula1MyLive.Interfaces;
 using Formula1MyLive.Middleware;
 using Formula1MyLive.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
-using NLog.Extensions.Logging;
 using System;
 using System.IO;
 
@@ -34,6 +31,7 @@ namespace Formula1MyLive
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.Configure<DatabaseConfiguration>(this.Configuration.GetSection("Database")).PostConfigure<DatabaseConfiguration>(o => o.Validate());
+			services.AddSingleton<AppConfigurationService>();
 			services.AddDbContext<DbContextService>(options => options.UseSqlServer(this.Configuration.GetSection("Database:ConnectionString").Value));
 			services.AddSingleton<ILoggerManager, LoggerManagerService>();
 			services.AddMvc()
@@ -54,7 +52,6 @@ namespace Formula1MyLive
 
 			app.UseStaticFiles();
 			app.UseMiddleware<ExceptionMiddleware>();
-			
 			app.UseMvc(routes=> routes.MapRoute(name: "default", template: "{controller=values}/{action=Get}/{id?}"));
 		}
 	}

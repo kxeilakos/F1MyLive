@@ -4,5 +4,31 @@
 
 
 2) https://darksky.net/dev/register
-kxeilakos@hotmail.com
-1l0v3darksky
+  username: kxeilakos@gmail.com
+  password: 1l0v3darksky
+ sercret key: 19a7a772f217cfff62a2cb3423d84b5b
+
+Example Request
+https://api.darksky.net/forecast/19a7a772f217cfff62a2cb3423d84b5b/26.0325,50.5106,2019-06-25T12:00:00?exclude=currently,flags,daily,minutely
+
+https://api.darksky.net/forecast/19a7a772f217cfff62a2cb3423d84b5b/26.0325,50.5106,2019-06-25T15:00:00?exclude=currently,flags,hourly,minutely&units=si
+
+SI units are as follows:
+
+summary: Any summaries containing temperature or snow accumulation units will have their values in degrees Celsius or in centimeters (respectively).
+nearestStormDistance: Kilometers.
+precipIntensity: Millimeters per hour.
+precipIntensityMax: Millimeters per hour.
+precipAccumulation: Centimeters.
+temperature: Degrees Celsius.
+temperatureMin: Degrees Celsius.
+temperatureMax: Degrees Celsius.
+apparentTemperature: Degrees Celsius.
+dewPoint: Degrees Celsius.
+windSpeed: Meters per second.
+pressure: Hectopascals.
+visibility: Kilometers.
+
+
+
+>> base_url/key/lat/lng/time?exclude

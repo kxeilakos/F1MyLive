@@ -1,4 +1,5 @@
 ﻿using Formula1MyLive.Configuration.Database;
+using Formula1MyLive.Interfaces;
 using Formula1MyLive.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -7,7 +8,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
+using NLog.Extensions.Logging;
+using System;
 using System.IO;
 
 namespace Formula1MyLive
@@ -17,10 +21,12 @@ namespace Formula1MyLive
 		public IHostingEnvironment HostingEnvironment { get; }
 		public IConfiguration Configuration { get; }
 
-		public Startup(IConfiguration configuration, IHostingEnvironment environment)
+		public Startup(IConfiguration configuration, IHostingEnvironment environment, ILoggerFactory loggerFactory)
 		{
+			NLog.LogManager.LoadConfiguration(String.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
 			this.Configuration = configuration;
 			this.HostingEnvironment = environment;
+
 		}
 
 		// This method gets called by the runtime. Use this method to add services to the container.
@@ -28,6 +34,7 @@ namespace Formula1MyLive
 		{
 			services.Configure<DatabaseConfiguration>(this.Configuration.GetSection("Database")).PostConfigure<DatabaseConfiguration>(o => o.Validate());
 			services.AddDbContext<DbContextService>(options => options.UseSqlServer(this.Configuration.GetSection("Database:ConnectionString").Value));
+			services.AddSingleton<ILoggerManager, LoggerManagerService>();
 			services.AddMvc()
 				.AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 		}	

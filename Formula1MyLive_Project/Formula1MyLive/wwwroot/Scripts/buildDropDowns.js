@@ -41,5 +41,23 @@ var buildConstructorsDrDn = function (constructors) {
 		var option = "<option value = '" + item.Id + "'>" + item.Name + "</option>";
 		element.append(option);
 	});
+
+	updateWeatherConditions();
+};
+
+//Weather forecast of Race
+var updateWeatherConditions = function () {
+
+	var request = {
+		year: getSeason(),
+		circuitId: getCircuit()
+	};
+
+	var url = "/api/weatherforecasts/";
+	CallWS("POST", url, "json", request, "application/json;charset = utf - 8", updateWeatherSection);
+};
+
+var updateWeatherSection = function (data) {
+	console.log(data);
 };
 

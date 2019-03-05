@@ -1,5 +1,6 @@
 ﻿using Formula1MyLive.Configuration.Database;
 using Formula1MyLive.Interfaces;
+using Formula1MyLive.Middleware;
 using Formula1MyLive.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -52,6 +53,7 @@ namespace Formula1MyLive
 			app.UseDefaultFiles(options);
 
 			app.UseStaticFiles();
+			app.UseMiddleware<ExceptionMiddleware>();
 			
 			app.UseMvc(routes=> routes.MapRoute(name: "default", template: "{controller=values}/{action=Get}/{id?}"));
 		}

@@ -43,6 +43,8 @@ namespace Formula1MyLive.Controllers
 		{
 			_logger.LogInfo($"Querying Circuits of Year: {year.ToString()}");
 
+			throw new Exception("Exception while fetching all Circuits of Year " + year.ToString());
+
 			IEnumerable<Race> races = await this._dbContextService.Race.ToListAsync();
 			IEnumerable<Race> racesOfYear = races.Where(x => x.Year == year).OrderBy(x=> x.Date);
 			IEnumerable<Int16> circuitIds = racesOfYear.Select(x => x.CircuitId);

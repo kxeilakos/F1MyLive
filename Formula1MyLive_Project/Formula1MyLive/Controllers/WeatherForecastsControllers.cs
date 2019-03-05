@@ -36,7 +36,6 @@ namespace Formula1MyLive.Controllers
 		[HttpPost]
 		public async Task<WeatherForecastResponse> Get([FromBody]Request request)
 		{
-			
 			Race raceOfCircuit = this._dbContextService.Race.Where(x => x.CircuitId == request.CircuitId && x.Year == request.Year).FirstOrDefault();
 			if (raceOfCircuit == null) throw new Exception($"Could not retrieve Race data for Year: {request.Year.ToString()} and Circuit: {request.CircuitId}");
 
@@ -53,10 +52,8 @@ namespace Formula1MyLive.Controllers
 
 				weatherForecastResponse = JsonConvert.DeserializeObject<WeatherForecastResponse>(jsonResponse);
 			}
-			else
-			{
-				return weatherForecastResponse;
-			}
+
+			return weatherForecastResponse;
 		}
 
 		#region Helpers

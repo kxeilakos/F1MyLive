@@ -8,7 +8,6 @@ namespace Formula1MyLive.Model
 {
 	public class WeatherForecastResponse
 	{
-
 		public string Status { get; set; }
 		public string Message { get; set; }
 

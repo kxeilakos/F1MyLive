@@ -15,10 +15,10 @@ namespace Formula1MyLive.Configuration
 			_configuration = configuration;
 		}
 
-		public string ApexBaseUrl { get { return this._configuration.GetSection("DarkSkyApi:BaseUrl").Value; } }
-		public string ApexKey { get { return this._configuration.GetSection("DarkSkyApi:Key").Value; } }
+		public string ApexBaseUrl { get { return this._configuration.GetSection("ApexApi:BaseUrl").Value; } }
+		public string ApexKey { get { return this._configuration.GetSection("ApexApi:Key").Value; } }
 
-		public string WeatherForecastBaseUrl { get { return this._configuration.GetSection("ApexApi:BaseUrl").Value; } }
-		public string WeatherForecastKey { get { return this._configuration.GetSection("ApexApi:BaseUrl").Value; } }
+		public string WeatherForecastBaseUrl { get { return this._configuration.GetSection("DarkSkyApi:BaseUrl").Value; } }
+		public string WeatherForecastKey { get { return this._configuration.GetSection("DarkSkyApi:BaseUrl").Value; } }
 	}
 }

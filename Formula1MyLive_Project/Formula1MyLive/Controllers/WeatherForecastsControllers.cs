@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -20,6 +21,7 @@ namespace Formula1MyLive.Controllers
 		private readonly DbContextService _dbContextService;
 		private readonly AppConfigurationService _appConfigurationService;
 		private readonly ILoggerManager _logger;
+		private const string DefaultRaceTime = "T12:00:00";
 
 		private IConfiguration _configuration { get; set; }
 
@@ -69,8 +71,10 @@ namespace Formula1MyLive.Controllers
 			stringBuilder.Append("/");
 			stringBuilder.Append(circuit.lng.Value.ToString().Replace(",", ".").Trim());
 			stringBuilder.Append("/");
-			stringBuilder.Append(raceOfCircuit.Date.ToString());
-			stringBuilder.Append("T15:00:00");
+			stringBuilder.Append(raceOfCircuit.Date.ToString("s").Split("T").First());
+			stringBuilder.Append("T");
+			string timeOfRace = raceOfCircuit.Time.HasValue ? raceOfCircuit.Time.Value.ToString() : DefaultRaceTime;
+			stringBuilder.Append(timeOfRace);
 			stringBuilder.Append("?exclude = currently,flags,daily,minutely&units=si");
 
 			return stringBuilder.ToString();

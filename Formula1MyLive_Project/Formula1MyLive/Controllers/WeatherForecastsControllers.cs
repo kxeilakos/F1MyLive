@@ -50,9 +50,14 @@ namespace Formula1MyLive.Controllers
 				HttpClient Client = new HttpClient();
 				string url = ConstructWeatherForecastResponseQueryString(circuit, raceOfCircuit);
 				var response = await Client.GetAsync(url);
+
 				string jsonResponse = response.Content.ReadAsStringAsync().Result;
 
 				weatherForecastResponse = JsonConvert.DeserializeObject<WeatherForecastResponse>(jsonResponse);
+				weatherForecastResponse.StatusCode = (int)response.StatusCode;
+				weatherForecastResponse.IsSuccessStatusCode = response.IsSuccessStatusCode;
+				weatherForecastResponse.Message = response.ReasonPhrase;
+
 			}
 
 			return weatherForecastResponse;
@@ -68,14 +73,14 @@ namespace Formula1MyLive.Controllers
 			stringBuilder.Append(_appConfigurationService.WeatherForecastKey);
 			stringBuilder.Append("/");
 			stringBuilder.Append(circuit.lat.Value.ToString().Replace(",", ".").Trim());
-			stringBuilder.Append("/");
+			stringBuilder.Append(",");
 			stringBuilder.Append(circuit.lng.Value.ToString().Replace(",", ".").Trim());
-			stringBuilder.Append("/");
+			stringBuilder.Append(",");
 			stringBuilder.Append(raceOfCircuit.Date.ToString("s").Split("T").First());
 			stringBuilder.Append("T");
 			string timeOfRace = raceOfCircuit.Time.HasValue ? raceOfCircuit.Time.Value.ToString() : DefaultRaceTime;
 			stringBuilder.Append(timeOfRace);
-			stringBuilder.Append("?exclude = currently,flags,daily,minutely&units=si");
+			stringBuilder.Append("?exclude=currently,flags,hourly,minutely&units=si");
 
 			return stringBuilder.ToString();
 		}

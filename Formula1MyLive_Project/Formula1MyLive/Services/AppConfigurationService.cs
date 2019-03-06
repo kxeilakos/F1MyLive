@@ -19,6 +19,6 @@ namespace Formula1MyLive.Configuration
 		public string ApexKey { get { return this._configuration.GetSection("ApexApi:Key").Value; } }
 
 		public string WeatherForecastBaseUrl { get { return this._configuration.GetSection("DarkSkyApi:BaseUrl").Value; } }
-		public string WeatherForecastKey { get { return this._configuration.GetSection("DarkSkyApi:BaseUrl").Value; } }
+		public string WeatherForecastKey { get { return this._configuration.GetSection("DarkSkyApi:Key").Value; } }
 	}
 }

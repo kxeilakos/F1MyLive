@@ -8,7 +8,9 @@ namespace Formula1MyLive.Model
 {
 	public class WeatherForecastResponse
 	{
-		public string Status { get; set; }
+		public int StatusCode { get; set; }
+		public bool IsSuccessStatusCode { get; set; }
+
 		public string Message { get; set; }
 
 		[JsonProperty(PropertyName = "offset")]

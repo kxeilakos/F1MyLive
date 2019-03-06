@@ -58,6 +58,54 @@ var updateWeatherConditions = function () {
 };
 
 var updateWeatherSection = function (data) {
-	console.log(data);
+	var weatherStatusElement = $('weatherStatus');
+	var weatherIconElement = getWeatherIcon(data.Icon);
+	
 };
 
+var getWeatherIcon = function (icon) {
+	var weatherElm = '';
+	switch (icon) {
+		case "clear-day":
+			{
+				weatherIcon = '<img src="Icons/sun.svg" class="settingsImg"/>';
+				break;
+			}
+		case "clear-night":
+			{
+				weatherIcon = '<img src="Icons/moon-clear-star.svg" class="settingsImg"/>';
+				break;
+			}
+		case "rain":
+			{
+				weatherIcon = '<img src="Icons/rainy.svg" class="settingsImg"/>';
+				break;
+			}
+		case "snow":
+			{
+				weatherIcon = '<img src="Icons/sowy.svg" class="settingsImg"/>';
+				break;
+			}
+		case "cloudy":
+			{
+				weatherIcon = '<img src="Icons/cloudy.svg" class="settingsImg"/>';
+				break;
+			}
+		case "partly-cloudy-day":
+			{
+				weatherIcon = '<img src="Icons/partially-cloudy.svg" class="settingsImg"/>';
+				break;
+			}
+		case "partly-cloudy-night":
+			{
+				weatherIcon = '<img src="Icons/partially-cloudy.svg" class="settingsImg"/>';
+				break;
+			}
+		default:
+			{
+				weatherIcon = '<img src="Icons/partially-cloudy.svg" class="settingsImg"/>';
+				break;
+			}
+	}
+	return weatherIcon;
+}

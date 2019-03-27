@@ -1,12 +1,4 @@
-1) http://cliptheapex.com/account/upgrades
->kxeilakos@hotmail.com
->1l0v3f1
 
-
-2) https://darksky.net/dev/register
-  username: kxeilakos@gmail.com
-  password: 1l0v3darksky
- sercret key: 19a7a772f217cfff62a2cb3423d84b5b
 
 Example Request
 https://api.darksky.net/forecast/19a7a772f217cfff62a2cb3423d84b5b/26.0325,50.5106,2019-06-25T12:00:00?exclude=currently,flags,daily,minutely

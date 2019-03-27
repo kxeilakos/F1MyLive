@@ -1,3 +1,8 @@
 *.cache
 Formula1MyLive_Project/Formula1MyLive/obj/
 Formula1MyLive_Project/Formula1MyLive/bin/
+*.ide-wal
+Formula1MyLive_Project/.vs/config/applicationhost.config
+Formula1MyLive_Project/.vs/Formula1MyLive/v15/.suo
+Formula1MyLive_Project/.vs/Formula1MyLive/v15/Server/sqlite3/storage.ide-shm
+Formula1MyLive_Project/.vs/Formula1MyLive/v15/Server/sqlite3/storage.ide-wal

@@ -35,6 +35,7 @@ $(document).ready(function () {
 		handleStatusLabel("", "");
 		updateCircuits(selectedSeasonId);
 		clearDriversAndConstructors();
+		clearWeatherActionPanel();
 	});
 	//2. Once a circuit is selected, then we retrieve all Drivers  & Constructors  of the selected season and circuit
 	var circuitControl = $('#selCircuit');
@@ -44,6 +45,7 @@ $(document).ready(function () {
 		var selectedSeasonId = seasonsControl.val();
 		updateDrivers(selectedSeasonId, selectedCircuitId);
 		updateConstructors(selectedSeasonId, selectedCircuitId);
+		clearWeatherActionPanel();
 	});
 	//3. Start Button event
 	var startBtnControl = $('#selStart');

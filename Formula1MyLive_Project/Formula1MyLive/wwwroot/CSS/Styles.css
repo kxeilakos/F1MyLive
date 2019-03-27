@@ -137,5 +137,11 @@
 .raceEventsList{
 	margin-left: -2em;
 }
-
+.settingsImgWeather {
+	float: left;
+	width: 2.0em;
+	height: auto;
+	margin-right: 20px;
+	margin-left: 20px;
+}
 

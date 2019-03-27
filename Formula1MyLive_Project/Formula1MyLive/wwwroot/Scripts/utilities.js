@@ -63,7 +63,7 @@ function handleStatusLabel(label, cls) {
 	var statusLabelElement = $('#labelStatus');
 	statusLabelElement.text(label);
 	statusLabelElement.removeClass();
-	statusLabelElement.addClass(cls);
+	if(cls && cls.length>0) statusLabelElement.addClass(cls);
 }
 
 //Set Lap label

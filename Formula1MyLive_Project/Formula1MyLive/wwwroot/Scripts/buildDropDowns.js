@@ -47,6 +47,7 @@ var buildConstructorsDrDn = function (constructors) {
 
 //Weather forecast of Race
 var updateWeatherConditions = function () {
+	handleStatusLabel("Retrieving race day weather report...");
 
 	var request = {
 		year: getSeason(),
@@ -58,8 +59,40 @@ var updateWeatherConditions = function () {
 };
 
 var updateWeatherSection = function (data) {
-	var weatherStatusElement = $('weatherStatus');
-	var weatherIconElement = getWeatherIcon(data.Icon);
+	clearWeatherActionPanel();
+
+	if (data.StatusCode === 200) {
+		var weatherData = data.daily.data[0];
+		var weatherIconElement = getWeatherIcon(weatherData.icon);
+
+		var wIcon = $('.wIcon');
+		wIcon.append(weatherIconElement);
+		wIcon.append(weatherData.summary);
+
+		var wTempHigh = $('.wTempHigh');
+		wTempHigh.append('<img src="Icons/temperature-max.svg" class="settingsImgWeather" />');
+		wTempHigh.append('<br>');
+		wTempHigh.append(weatherData.temperatureHigh + ' °C');
+
+		var wTempLow = $('.wTempLow');
+		wTempLow.append('<img src="Icons/temperature-min.svg" class="settingsImgWeather" />');
+		wTempLow.append('<br>');
+		wTempLow.append(weatherData.temperatureLow + ' °C');
+
+		var wHumidity = $('.wHumidity');
+		wHumidity.append('<img src="Icons/humidity.svg" class="settingsImgWeather" />');
+		wHumidity.append('<br>');
+		wHumidity.append(Math.round(weatherData.humidity * 100) + '%');
+
+		var wWindSpeed = $('.wWindSpeed');
+		wWindSpeed.append('<img src="Icons/flag-windy.svg" class="settingsImgWeather" />');
+		wWindSpeed.append('<br>');
+		wWindSpeed.append(weatherData.windSpeed + ' m/sec');
+
+		handleStatusLabel("Race day weather report");
+	} else {
+		handleStatusLabel("Failed to retreive weather data");
+	}
 	
 };
 
@@ -68,44 +101,57 @@ var getWeatherIcon = function (icon) {
 	switch (icon) {
 		case "clear-day":
 			{
-				weatherIcon = '<img src="Icons/sun.svg" class="settingsImg"/>';
+				weatherIcon = '<img src="Icons/sun.svg" class="settingsImgWeather"/>';
 				break;
 			}
 		case "clear-night":
 			{
-				weatherIcon = '<img src="Icons/moon-clear-star.svg" class="settingsImg"/>';
+				weatherIcon = '<img src="Icons/moon-clear-star.svg" class="settingsImgWeather"/>';
 				break;
 			}
 		case "rain":
 			{
-				weatherIcon = '<img src="Icons/rainy.svg" class="settingsImg"/>';
+				weatherIcon = '<img src="Icons/rainy.svg" class="settingsImgWeather"/>';
 				break;
 			}
 		case "snow":
 			{
-				weatherIcon = '<img src="Icons/sowy.svg" class="settingsImg"/>';
+				weatherIcon = '<img src="Icons/snowy.svg" class="settingsImgWeather"/>';
 				break;
 			}
 		case "cloudy":
 			{
-				weatherIcon = '<img src="Icons/cloudy.svg" class="settingsImg"/>';
+				weatherIcon = '<img src="Icons/cloudy.svg" class="settingsImgWeather"/>';
 				break;
 			}
 		case "partly-cloudy-day":
 			{
-				weatherIcon = '<img src="Icons/partially-cloudy.svg" class="settingsImg"/>';
+				weatherIcon = '<img src="Icons/partially-cloudy.svg" class="settingsImgWeather"/>';
 				break;
 			}
 		case "partly-cloudy-night":
 			{
-				weatherIcon = '<img src="Icons/partially-cloudy.svg" class="settingsImg"/>';
+				weatherIcon = '<img src="Icons/partially-cloudy.svg" class="settingsImgWeather"/>';
 				break;
 			}
 		default:
 			{
-				weatherIcon = '<img src="Icons/partially-cloudy.svg" class="settingsImg"/>';
+				weatherIcon = '<img src="Icons/partially-cloudy.svg" class="settingsImgWeather"/>';
 				break;
 			}
 	}
 	return weatherIcon;
-}
+};
+
+var clearWeatherActionPanel = function () {
+	var wIcon = $('.wIcon');
+	wIcon.empty();
+	var wTempHigh = $('.wTempHigh');
+	wTempHigh.empty();
+	var wTempLow = $('.wTempLow');
+	wTempLow.empty();
+	var wHumidity = $('.wHumidity');
+	wHumidity.empty();
+	var wWindSpeed = $('.wWindSpeed');
+	wWindSpeed.empty();
+};

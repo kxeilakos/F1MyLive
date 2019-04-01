@@ -145,11 +145,14 @@ namespace Formula1MyLive.Controllers
 			}
 
 			//Calculate PositionStatus for each driver
+			Dictionary<short, IOrderedEnumerable<LapTimeWithEvents>> lapTimesByLap = collection.GroupBy(x => x.Lap).ToDictionary(t => t.Key, t => t.Select(r => r).OrderBy(x => x.Position));
+
 			Dictionary<short, IOrderedEnumerable<LapTimeWithEvents>> lapTimesByDriver = collection.GroupBy(x => x.DriverId).ToDictionary(t => t.Key, t => t.Select(r => r).OrderBy(x => x.Lap));
+
 			foreach (KeyValuePair<short, IOrderedEnumerable<LapTimeWithEvents>> keyValuePair in lapTimesByDriver)
 			{
 				var lapTimesOfDriver = keyValuePair.Value.ToArray();
-				for (int i = 1; i < lapTimesOfDriver.Length - 1; i++)
+				for (short i = 1; i < lapTimesOfDriver.Length - 1; i++)
 				{
 					if (lapTimesOfDriver[i].Position == lapTimesOfDriver[i - 1].Position)
 					{
@@ -158,15 +161,33 @@ namespace Formula1MyLive.Controllers
 					else if (lapTimesOfDriver[i].Position < lapTimesOfDriver[i - 1].Position)
 					{
 						lapTimesOfDriver[i].PositionStatus = PositionStatus.Up;
+						IOrderedEnumerable<LapTimeWithEvents> tempLapTimes = null;
+						lapTimesByLap.TryGetValue(lapTimesOfDriver[i].Lap, out tempLapTimes);
+						if(tempLapTimes != null)
+						{
+							
+						}
+						//lapTimesOfDriver[i].OvertakenDriverName = GetOvertakenDriverName();
 					}
 					else
 					{
+						IOrderedEnumerable<LapTimeWithEvents> tempLapTimes = null;
+						lapTimesByLap.TryGetValue(lapTimesOfDriver[i].Lap, out tempLapTimes);
+						short overtakes = (short)Math.Abs(lapTimesOfDriver[i].Position - lapTimesOfDriver[i - 1].Position);
+						lapTimesOfDriver[i].OvertakeLabels = new List<string>();
+						for ( short j=1; j<= overtakes; j++)
+						{
+
+							string DriverNameAhead = tempLapTimes.Where(x => x.Position == lapTimesOfDriver[i - 1].Position + j - 1).FirstOrDefault().DriverName;
+							lapTimesOfDriver[i].OvertakeLabels.Add(DriverNameAhead + " has overtaken " + lapTimesOfDriver[i].DriverName);
+						}
+						
+
 						lapTimesOfDriver[i].PositionStatus = PositionStatus.Down;
 					}
 				}
 			}
 
-			Dictionary<short, IOrderedEnumerable<LapTimeWithEvents>> lapTimesByLap = collection.GroupBy(x => x.Lap).ToDictionary(t => t.Key, t => t.Select(r => r).OrderBy(x => x.Position));
 			return lapTimesByLap;
 		}
 

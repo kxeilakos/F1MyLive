@@ -15,5 +15,6 @@ namespace Formula1MyLive.Database.Model
 		public bool HasPitstop { get; set; }
 		public string RaceStatus { get; set; }
 		public short RaceStatusId { get; set; }
+		public List<string> OvertakeLabels { get; set; }
 	}
 }

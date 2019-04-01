@@ -14,7 +14,7 @@ namespace Formula1MyLive.Model
 		public string Message { get; set; }
 
 		[JsonProperty(PropertyName = "offset")]
-		public short Offset { get; set; }
+		public double  Offset { get; set; }
 
 		[JsonProperty(PropertyName = "latitude")]
 		public string Latitude { get; set; }

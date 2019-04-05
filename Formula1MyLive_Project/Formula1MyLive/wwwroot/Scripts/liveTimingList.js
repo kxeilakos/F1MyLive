@@ -55,7 +55,7 @@ async function populateLiveTimingTable(data) {
 			}
 			if (rowData.OvertakeLabels !== null) {
 				for (var k = 0; k < rowData.OvertakeLabels.length; k++) {
-					var overTakeItem = generateRaceEventsListOvertakeItem(rowData.Lap, rowData.OvertakeLabels[k]);
+					var overTakeItem = generateRaceEventsListOvertakeItem(rowData.Lap, rowData.OvertakeLabels[k], rowData.DriverId);
 					raceListEvents.append(overTakeItem);
 				}
 			}
@@ -84,6 +84,10 @@ async function populateLiveTimingTable(data) {
 }
 
 function generateLiveTimingTableRow(rowData) {
+
+	var selectedDriverId = $('#selDriver').val();
+	var selectedContructorId = $('#selConstructor').val();
+
 	var row = $('<tr>');
 	row.attr('id', rowData.Lap + "#" + rowData.DriverName);
 	var th = $('<th scope="row">');
@@ -92,9 +96,19 @@ function generateLiveTimingTableRow(rowData) {
 	var positionStatusIcon = getPositionStatusIcon(rowData.PositionStatus);
 	tdPositionStatus.append(positionStatusIcon);
 	var tdDriverName = $('<td>');
+
+	if (rowData.DriverId === +selectedDriverId) {
+		tdDriverName.addClass('selectedDriverAndTeam');
+	}
+
 	tdDriverName.append(rowData.DriverName);
 	var tdConstructorName = $('<td>');
 	tdConstructorName.append(rowData.ConstructorName);
+
+	if (rowData.ConstructorId === +selectedContructorId) {
+		tdConstructorName.addClass('selectedDriverAndTeam');
+	}
+
 	var tdTime = $('<td>');
 	tdTime.append(rowData.Time);
 	var tdLap = $('<td>');
@@ -153,6 +167,9 @@ function getInterval() {
 
 //Race Events List
 function generateRaceEventsListPitStopItem(rowData) {
+
+	var selectedDriverId = $('#selDriver').val();
+
 	var eventIcon = $('<img>');
 	eventIcon.attr("src", "./Icons/pit-stop.svg");
 	eventIcon.addClass("imgPitStop");
@@ -168,12 +185,23 @@ function generateRaceEventsListPitStopItem(rowData) {
 	li.addClass("marginRight1");
 	li.append(eventIcon);
 	li.append(span);
-	li.append(pitStopLabel);
+	var span2 = $('<span>');
+	span2.append(pitStopLabel);
+
+	if (rowData.DriverId === +selectedDriverId) {
+		span2.addClass('selectedDriverAndTeam');
+		span.addClass('selectedDriverAndTeam');
+	}
+
+	li.append(span2);
 
 	return li;
 }
 
 function generateRaceEventsListStatusItem(rowData) {
+
+	var selectedDriverId = $('#selDriver').val();
+
 	var eventIcon = $('<img>');
 	if (rowData.RaceStatusId === 1) {
 		eventIcon.attr("src", "./Icons/racing-flag.svg");
@@ -193,12 +221,22 @@ function generateRaceEventsListStatusItem(rowData) {
 	li.addClass("marginRight1");
 	li.append(eventIcon);
 	li.append(span);
-	li.append(statusLabel);
+
+	var span2 = $('<span>');
+	span2.append(statusLabel);
+	if (rowData.DriverId === +selectedDriverId) {
+		span2.addClass('selectedDriverAndTeam');
+		span.addClass('selectedDriverAndTeam');
+	}
+
+	li.append(span2);
 
 	return li;
 }
 
-function generateRaceEventsListOvertakeItem(lap, overtakeLabel) {
+function generateRaceEventsListOvertakeItem(lap, overtakeLabel, driverID) {
+	var selectedDriverId = $('#selDriver').val();
+
 	var eventIcon = $('<img>');
 	eventIcon.attr("src", "./Icons/overtake1.svg");
 	eventIcon.addClass("imgOvertake");
@@ -213,7 +251,16 @@ function generateRaceEventsListOvertakeItem(lap, overtakeLabel) {
 	li.addClass("marginRight1");
 	li.append(eventIcon);
 	li.append(span);
-	li.append(overtakeLabel);
+
+	var span2 = $('<span>');
+	span2.append(overtakeLabel);
+
+	if (driverID === +selectedDriverId) {
+		span2.addClass('selectedDriverAndTeam');
+		span.addClass('selectedDriverAndTeam');
+	}
+
+	li.append(span2);
 
 	return li;
 }

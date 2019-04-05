@@ -163,5 +163,9 @@
 	position: relative;
 	padding-bottom: 5px;
 }
+.selectedDriverAndTeam{
+	color: darkblue;
+	font-weight: 700;
+}
 
 

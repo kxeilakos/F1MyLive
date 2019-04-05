@@ -2,6 +2,10 @@
 var buildSeasonsDrDn = function (seasons) {
 	var element = $('#selSeason');
 	element.html('');
+
+	var fistOption = '<option value="-1">Select Season</option>';
+	element.append(fistOption);
+
 	$.each(seasons, function (i, item) {
 		var option = "<option value = '" + item.Year + "'>" + item.Year + "</option>";
 		element.append(option);
@@ -14,6 +18,10 @@ var buildSeasonsDrDn = function (seasons) {
 var buildCircuitsDrDn = function (circuits) {
 	var element = $('#selCircuit');
 	element.html('');
+
+	var fistOption = '<option value="-1">Select Circuit</option>';
+	element.append(fistOption);
+
 	$.each(circuits, function (i, item) {
 		var option = "<option value = '" + item.Id + "'>" + item.Name + "</option>";
 		element.append(option);

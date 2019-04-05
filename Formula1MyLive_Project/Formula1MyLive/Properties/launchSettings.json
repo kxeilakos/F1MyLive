@@ -11,19 +11,19 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "api/values",
+      "launchUrl": "startup.html",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Formula1MyLive": {
-      "commandName": "Project",
-      "launchBrowser": true,
-      "launchUrl": "api/values",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "applicationUrl": "http://localhost:62136/"
-    }
+	"Formula1MyLive": {
+		"commandName": "Project",
+		"launchBrowser": true,
+		"launchUrl": "startup.html",
+		"environmentVariables": {
+			"ASPNETCORE_ENVIRONMENT": "Development"
+		},
+		"applicationUrl": "http://localhost:62136/"
+	}
   }
 }

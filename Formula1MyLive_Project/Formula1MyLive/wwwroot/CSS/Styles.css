@@ -22,6 +22,13 @@
 	margin-right: 20px;
 	margin-left: 20px;
 }
+.settingsImgLiveTiming {
+	float: left;
+	width: 3.0em;
+	height: auto;
+	margin-right: 20px;
+	margin-left: 20px;
+}
 .cursorPointer {
 	cursor: pointer;
 }
@@ -126,16 +133,24 @@
 	color:orangered;
 }
 .colorClassData {
-	color:orange;
+	color:black;
 }
-.eventsListPitStopItem {
+.eventsListPitStopItem, .eventsListOvertakeItem {
 	font-weight: 600;
 }
-.imgPitStop{
+.imgPitStop {
 	width: 2.5em;
 }
-.raceEventsList{
+.imgOvertake {
+	width: 2.0em;
+}
+.raceEventsList {
 	margin-left: -2em;
+}
+.raceEventsListSettings {
+	max-height: 1200px;
+	overflow-y: auto;
+	position: absolute;
 }
 .settingsImgWeather {
 	float: left;
@@ -144,4 +159,9 @@
 	margin-right: 20px;
 	margin-left: 20px;
 }
+.raceEventsLabelSettings {
+	position: relative;
+	padding-bottom: 5px;
+}
+
 

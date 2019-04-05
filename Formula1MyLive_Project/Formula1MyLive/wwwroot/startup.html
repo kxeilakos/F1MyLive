@@ -29,38 +29,39 @@
 		<div class="jumbotron text-center" style="margin-bottom:0">
 			<img src="./Icons/fia-formula-1-world-championship-logo.png" alt="f1logo" class="responsiveImg">
 			<h2 style="font-size:36px">F1 racing Live</h2>
-			<h4>Select Year and circuit to view race evlution, statistics, overtakes and other significant events</h4>
+			<h4>Select Year and Circuit to view race evolution, pitstops, overtakes and other significant events</h4>
 		</div>
 
 		<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
-			<a class="navbar-brand" href="#">My Live App</a>
+			<a class="navbar-brand" href="#">F1 racing Live</a>
+			<img class="settingsImgLiveTiming" src="./Icons/goal.svg" />
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="navbarCollapse">
-				<ul class="navbar-nav mr-auto">
-					<li class="nav-item active">
-						<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="#">Events</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="#">Drivers</a>
-					</li>
-				</ul>
+				<!--<ul class="navbar-nav mr-auto">
+			<li class="nav-item active">
+				<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#">Events</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#">Drivers</a>
+			</li>
+		</ul>-->
 			</div>
 		</nav>
 		<div class="mainContainer">
 			<div class="row">
-				<div class="col-sm-2" style="background-color:#e9ecef;">
+				<div class="col-sm-2" style="background-color:#e9ecef;" id="raceControlPanel">
 					<div class="row marginTop1">
 						<div class="col-md-12">
 							<img class="settingsImg" src="./Icons/calendar.svg" />
 							<h5>Season</h5>
 							<div class="form-group">
 								<select class="form-control" id="selSeason">
-									
+									<option value="-1">Select Season</option>
 								</select>
 							</div>
 						</div>
@@ -71,7 +72,7 @@
 							<h5>Circuit</h5>
 							<div class="form-group">
 								<select class="form-control" id="selCircuit">
-										
+									<option value="-1">Select Circuit</option>
 								</select>
 							</div>
 						</div>
@@ -119,22 +120,21 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-8" style="background-color:antiquewhite">
+				<div class="col-sm-8" style="background-color:antiquewhite" id="raceControlLiveTiming">
 					<div class="row marginTop1">
 						<div class="col-sm-2 marginBtm1">
-							<img class="settingsImg" src="./Icons/live timing.svg" />
 							<h5>Live Timing</h5>
 						</div>
 						<div class="col-sm-2 cursorPointer" id="playBackControls">
-							<i class="fa fa-fast-backward marginRight1"></i>
-							<i class="fa fa-play marginRight1"></i>
-							<i class="fa fa-pause marginRight1"></i>
-							<i class="fa fa-fast-forward"></i>
+							<i class="fa fa-fast-backward marginRight1" title="Go to Start"></i>
+							<i class="fa fa-play marginRight1" title="Play"></i>
+							<i class="fa fa-pause marginRight1" title="Pause"></i>
+							<i class="fa fa-fast-forward" title="Go to Finish"></i>
 						</div>
 						<div class="col-sm-8">
 							<div class="cursorPointer progressBarCstmHght">
 								<input type="range" class="slider slider-pic" id="rangeSlider">
-
+										
 								<h6>Lap: <span id="selLapSlider"></span></h6>
 							</div>
 						</div>
@@ -172,14 +172,13 @@
 						</div>
 					</div>
 					</div>
-				<div class="col-sm-2" style="background-color:#e9ecef;">
-					<div class="row marginTop1">
-						<div class="col-md-12">
-							<img class="settingsImg" src="./Icons/overtake1.svg" />
+				<div class="col-sm-2" style="background-color:#e9ecef;" id="raceControlEvents">
+					<div class="row marginTop1 raceEventsLabelSettings">
+						<div class="col-md-12" style="top:0;">
 							<h5>Race Events</h5>
 						</div>
 					</div>
-					<div class="row">
+					<div class="row raceEventsListSettings">
 						<ul style="list-style:none" class="marginTop1 raceEventsList" id="raceEventsList">
 							
 						</ul>

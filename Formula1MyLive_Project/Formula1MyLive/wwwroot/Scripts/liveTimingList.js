@@ -53,6 +53,12 @@ async function populateLiveTimingTable(data) {
 				var raceStatusItem = generateRaceEventsListStatusItem(rowData);
 				raceListEvents.append(raceStatusItem);
 			}
+			if (rowData.OvertakeLabels !== null) {
+				for (var k = 0; k < rowData.OvertakeLabels.length; k++) {
+					var overTakeItem = generateRaceEventsListOvertakeItem(rowData.Lap, rowData.OvertakeLabels[k]);
+					raceListEvents.append(overTakeItem);
+				}
+			}
 
 			tableBody.append(row);
 			
@@ -63,10 +69,16 @@ async function populateLiveTimingTable(data) {
 		
 		await timer(interval);
 
+		//Set height of Events List Div according to LiveTiming list Div
+		var sourceDiv = $('#raceControlLiveTiming');
+		var sourceHeight = sourceDiv.innerHeight();
+		var targetElement = $('#raceControlEvents');
+		targetElement.innerHeight(sourceHeight);
+
 		if(+prop === totalLaps) {
 			stop = true;
 			raceInProgress = false;
-			handleStatusLabel("Race finished", "colorClassData");
+			handleStatusLabel("Race finished", "colorClassDown");
 		}
 	}
 }
@@ -182,6 +194,26 @@ function generateRaceEventsListStatusItem(rowData) {
 	li.append(eventIcon);
 	li.append(span);
 	li.append(statusLabel);
+
+	return li;
+}
+
+function generateRaceEventsListOvertakeItem(lap, overtakeLabel) {
+	var eventIcon = $('<img>');
+	eventIcon.attr("src", "./Icons/overtake1.svg");
+	eventIcon.addClass("imgOvertake");
+	eventIcon.addClass("marginRight1");
+
+	var lapLabel = "Lap " + lap + ": ";
+	var li = $('<li>');
+	var span = $('<span>');
+	span.addClass("eventsListOvertakeItem");
+	span.addClass("marginBtm1");
+	span.append(lapLabel);
+	li.addClass("marginRight1");
+	li.append(eventIcon);
+	li.append(span);
+	li.append(overtakeLabel);
 
 	return li;
 }

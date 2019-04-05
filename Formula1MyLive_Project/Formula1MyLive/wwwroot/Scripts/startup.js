@@ -32,6 +32,8 @@ $(document).ready(function () {
 	var seasonsControl = $('#selSeason');
 	$(seasonsControl).bind("change", function (e) {
 		var selectedSeasonId = seasonsControl.val();
+		if (selectedSeasonId === "-1") return;
+
 		handleStatusLabel("", "");
 		updateCircuits(selectedSeasonId);
 		clearDriversAndConstructors();
@@ -40,8 +42,11 @@ $(document).ready(function () {
 	//2. Once a circuit is selected, then we retrieve all Drivers  & Constructors  of the selected season and circuit
 	var circuitControl = $('#selCircuit');
 	$(circuitControl).bind("change", function (e) {
-		handleStatusLabel("", "");
+		
 		var selectedCircuitId = circuitControl.val();
+		if (selectedCircuitId === "-1") return;
+
+		handleStatusLabel("", "");
 		var selectedSeasonId = seasonsControl.val();
 		updateDrivers(selectedSeasonId, selectedCircuitId);
 		updateConstructors(selectedSeasonId, selectedCircuitId);
@@ -50,7 +55,7 @@ $(document).ready(function () {
 	//3. Start Button event
 	var startBtnControl = $('#selStart');
 	startBtnControl.click(function () {
-		if ($(this).hasClass("started")) {
+		if ($(this).hasClass("started") && raceInProgress) {
 			location.reload();
 			return;
 		}
@@ -58,7 +63,7 @@ $(document).ready(function () {
 			$(this).addClass("started");
 			var selectedCircuit = getCircuit();
 			var selectedYear = getSeason();
-			if (selectedCircuit === null || selectedYear === null) {
+			if (selectedCircuit === null || selectedYear === null || selectedCircuit === "-1" || selectedYear === "-1") {
 				handleStatusLabel("Please select Circuit & Season First", "colorClassData");
 				return;
 			}

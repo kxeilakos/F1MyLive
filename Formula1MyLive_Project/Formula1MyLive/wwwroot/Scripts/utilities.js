@@ -111,37 +111,61 @@ function isLapsEventChecked() {
 	return $('#laps-event').is(":checked");
 }
 function isStatusFinished(status){
-	return status.RaceStatusId === 1;
+	return status === 1;
 }
 function isStatusAbandoned(status) {
-	return (status.RaceStatusId >= 1 && status.RaceStatusId <= 10) || (status.RaceStatusId >= 20 && status.RaceStatusId <= 44);
+	return (status >= 1 && status <= 10) || (status >= 20 && status <= 44);
 }
 function isStatusLapsPlus(status) {
-	return status.RaceStatusId >= 11 && status.RaceStatusId <= 19;
+	return status >= 11 && status <= 19;
 }
 function showPitstops() {
-
+	var items = $('.status-pitstop');
+	for (var k = 0; k < items.length; k++) {
+		$(items[k]).show();
+	}
 }
 function hidePitstops() {
-
+	var items = $('.status-pitstop');
+	for (var k = 0; k < items.length; k++) {
+		$(items[k]).hide();
+	}
 }
 function showFinished() {
-
+	var items = $('.status-finished');
+	for (var k = 0; k < items.length; k++) {
+		$(items[k]).show();
+	}
 }
 function hideFinished() {
-
+	var items = $('.status-finished');
+	for (var k = 0; k < items.length; k++) {
+		$(items[k]).hide();
+	}
 }
 function showLaps() {
-
+	var items = $('.status-laps');
+	for (var k = 0; k < items.length; k++) {
+		$(items[k]).show();
+	}
 }
 function hideLaps() {
-
+	var items = $('.status-laps');
+	for (var k = 0; k < items.length; k++) {
+		$(items[k]).hide();
+	}
 }
 function showAbandoned() {
-
+	var items = $('.status-abandoned');
+	for (var k = 0; k < items.length; k++) {
+		$(items[k]).show();
+	}
 }
 function hideAbandoned() {
-
+	var items = $('.status-abandoned');
+	for (var k = 0; k < items.length; k++) {
+		$(items[k]).hide();
+	}
 }
 
 //Local storage

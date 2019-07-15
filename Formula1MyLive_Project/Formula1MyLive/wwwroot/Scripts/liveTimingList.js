@@ -95,14 +95,21 @@ async function populateLiveTimingTable(data) {
 
 			if (rowData.HasPitstop) {
 				var pitStopItem = generateRaceEventsListPitStopItem(rowData);
-				if (!isPistopEventChecked()) { pitStopItem.addClass('disp-n'); pitStopItem.addClass('status-pitstop');}
+				if (!isPistopEventChecked()) pitStopItem.addClass('disp-n');
+				pitStopItem.addClass('status-pitstop');
 				raceListEvents.prepend(pitStopItem);
 			}
 			if (rowData.RaceStatus && rowData.RaceStatus.length>0) {
 				var raceStatusItem = generateRaceEventsListStatusItem(rowData);
-				if (!isFinishedEventChecked() && isStatusFinished(rowData.RaceStatusId)) { raceStatusItem.addClass('disp-n'); raceStatusItem.addClass('status-finished');}
-				if (!isAbandonedEventChecked() && isStatusAbandoned(rowData.RaceStatusId)) { raceStatusItem.addClass('disp-n'); raceStatusItem.addClass('status-abandoned');}
-				if (!isLapsEventChecked() && isStatusLapsPlus(rowData.RaceStatusId)) { raceStatusItem.addClass('disp-n'); raceStatusItem.addClass('status-laps'); }
+				if (!isFinishedEventChecked() && isStatusFinished(rowData.RaceStatusId)) raceStatusItem.addClass('disp-n');
+				if (isStatusFinished(rowData.RaceStatusId)) raceStatusItem.addClass('status-finished');
+
+				if (!isAbandonedEventChecked() && isStatusAbandoned(rowData.RaceStatusId))  raceStatusItem.addClass('disp-n'); 
+				if (isStatusAbandoned(rowData.RaceStatusId)) raceStatusItem.addClass('status-abandoned');
+
+				if (!isLapsEventChecked() && isStatusLapsPlus(rowData.RaceStatusId)) raceStatusItem.addClass('disp-n');
+				if (isStatusLapsPlus(rowData.RaceStatusId)) raceStatusItem.addClass('status-laps');
+
 				raceListEvents.prepend(raceStatusItem);
 			}
 			if (rowData.OvertakeLabels !== null) {

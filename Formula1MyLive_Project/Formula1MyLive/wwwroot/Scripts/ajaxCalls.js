@@ -12,9 +12,11 @@
 		},
 		failure: function (data) {
 			console.log(data);
+			handleFailure(data);
 		},
 		error: function (data) {
 			console.log(data);
+			handleError(data);
 		}
 
 	});

@@ -1,4 +1,48 @@
-﻿//LiveTiming list
+﻿// ***** Constants     ******** //
+var requestType = {
+	GET: "GET",
+	POST: "POST",
+	PUT: "PUT",
+	DELETE: "DELETE"
+};
+
+var dataType = {
+	json: "json",
+	xml: "xml"
+};
+
+var contentType = "application/json;charset = utf - 8";
+var raceFinishedLabel = "Race finished";
+
+
+// ***** Current File Selectors ***** //
+function getTableBody() {
+	return $('#liveTimingList');
+}
+
+function getRaceEventsList() {
+	return $('#raceEventsList');
+}
+
+function getRaceControlLiveTiming() {
+	return $('#raceControlLiveTiming');
+}
+
+function getRaceControlEvents() {
+	return $('#raceControlEvents');
+}
+
+function getSelectedDriverId() {
+	return $('#selDriver').val();
+}
+
+function getSelectedConstructorId() {
+	return $('#selConstructor').val();
+}
+
+// ***** Live Timing Table Methods ***** //
+
+//1. LiveTiming list
 function startLiveTiming() {
 
 	var request = {
@@ -7,9 +51,10 @@ function startLiveTiming() {
 	};
 
 	var url = "/api/laptimes/";
-	CallWS("POST", url, "json", request, "application/json;charset = utf - 8", populateLiveTimingTable);
+	CallWS(requestType.POST, url, dataType.json, request, contentType, populateLiveTimingTable);
 }
 
+//2. Simulate playback editor through an async Timer
 function timer(ms) {
 	return new Promise(res => setTimeout(res, ms));
 }
@@ -28,52 +73,54 @@ async function populateLiveTimingTable(data) {
 
 	for (var prop in lapTimesByLap) {
 		console.log(currentLap);
+
+		//If user pauses Race Evolution trace current Lap
 		if (stop) {
 			currentLap = prop - 1;
-			//break;
 			return;
 		}
+		//If user resumes Race Evolution skip Laps before current
 		if (+prop < +currentLap) continue;
 
 		var driversList = lapTimesByLap[prop];
 		clearTable();
 
-		var tableBody = $('#liveTimingList');
-		var raceListEvents = $('#raceEventsList');
+		var tableBody = getTableBody();
+		var raceListEvents = getRaceEventsList();
 
 		for (var i = 0; i < driversList.length; i++) {
 			var rowData = driversList[i];
 
 			var row = generateLiveTimingTableRow(rowData);
+
 			if (rowData.HasPitstop) {
 				var pitStopItem = generateRaceEventsListPitStopItem(rowData);
-				raceListEvents.append(pitStopItem);
+				if (!isPistopEventChecked()) pitStopItem.addClass('disp-n');
+				raceListEvents.prepend(pitStopItem);
 			}
 			if (rowData.RaceStatus && rowData.RaceStatus.length>0) {
 				var raceStatusItem = generateRaceEventsListStatusItem(rowData);
-				raceListEvents.append(raceStatusItem);
+				if (!isFinishedEventChecked() && isStatusFinished(rowData.RaceStatusId)) raceStatusItem.addClass('disp-n');
+				if (!isAbandonedEventChecked() && isStatusAbandoned(rowData.RaceStatusId)) raceStatusItem.addClass('disp-n');
+				if (!isLapsEventChecked() && isStatusLapsPlus(rowData.RaceStatusId)) raceStatusItem.addClass('disp-n');
+				raceListEvents.prepend(raceStatusItem);
 			}
 			if (rowData.OvertakeLabels !== null) {
 				for (var k = 0; k < rowData.OvertakeLabels.length; k++) {
 					var overTakeItem = generateRaceEventsListOvertakeItem(rowData.Lap, rowData.OvertakeLabels[k], rowData.DriverId);
-					raceListEvents.append(overTakeItem);
+					raceListEvents.prepend(overTakeItem);
 				}
 			}
 
 			tableBody.append(row);
-			
 		}
+
 		handleLapLabel(prop);
 		moveSliderToLap(prop);
 		raceInProgress = true;
-		
-		await timer(interval);
+		calclulateEventsListHeight();
 
-		//Set height of Events List Div according to LiveTiming list Div
-		var sourceDiv = $('#raceControlLiveTiming');
-		var sourceHeight = sourceDiv.innerHeight();
-		var targetElement = $('#raceControlEvents');
-		targetElement.innerHeight(sourceHeight);
+		await timer(interval);
 
 		if(+prop === totalLaps) {
 			stop = true;
@@ -83,10 +130,11 @@ async function populateLiveTimingTable(data) {
 	}
 }
 
+//3. Generate Row for Table containing Race Evolution data
 function generateLiveTimingTableRow(rowData) {
 
-	var selectedDriverId = $('#selDriver').val();
-	var selectedContructorId = $('#selConstructor').val();
+	var selectedDriverId = getSelectedDriverId();
+	var selectedContructorId = getSelectedConstructorId();
 
 	var row = $('<tr>');
 	row.attr('id', rowData.Lap + "#" + rowData.DriverName);
@@ -123,6 +171,7 @@ function generateLiveTimingTableRow(rowData) {
 	return row;
 }
 
+//4.  Resolve Stastus Icon
 function getPositionStatusIcon(positionStatus) {
 	var iconClass = '';
 	var colorClass = '';
@@ -149,6 +198,8 @@ function getPositionStatusIcon(positionStatus) {
 
 	return iconSpan;
 }
+
+//5. Interval according to user's selection
 function getInterval() {
 	var speed = this.getSpeed();
 	switch (speed) {
@@ -165,10 +216,22 @@ function getInterval() {
 	}
 }
 
-//Race Events List
+// 6. Set height of Events List Div according to LiveTiming list Div
+function calclulateEventsListHeight() {
+	var sourceDiv = getRaceControlLiveTiming();
+	var sourceHeight = sourceDiv.innerHeight();
+	var targetElement = getRaceControlEvents();
+	targetElement.innerHeight(sourceHeight);
+}
+
+
+
+// ********  Generate Race Events List Items  ************** //
+
+//1. PitstopItem
 function generateRaceEventsListPitStopItem(rowData) {
 
-	var selectedDriverId = $('#selDriver').val();
+	var selectedDriverId = getSelectedDriverId();
 
 	var eventIcon = $('<img>');
 	eventIcon.attr("src", "./Icons/pit-stop.svg");
@@ -198,9 +261,10 @@ function generateRaceEventsListPitStopItem(rowData) {
 	return li;
 }
 
+//2. Status Item
 function generateRaceEventsListStatusItem(rowData) {
 
-	var selectedDriverId = $('#selDriver').val();
+	var selectedDriverId = getSelectedDriverId();
 
 	var eventIcon = $('<img>');
 	if (rowData.RaceStatusId === 1) {
@@ -234,9 +298,11 @@ function generateRaceEventsListStatusItem(rowData) {
 	return li;
 }
 
+//3. Overtake item
 function generateRaceEventsListOvertakeItem(lap, overtakeLabel, driverID) {
-	var selectedDriverId = $('#selDriver').val();
 
+	var selectedDriverId = getSelectedDriverId();
+	
 	var eventIcon = $('<img>');
 	eventIcon.attr("src", "./Icons/overtake1.svg");
 	eventIcon.addClass("imgOvertake");

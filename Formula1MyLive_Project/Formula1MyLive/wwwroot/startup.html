@@ -163,7 +163,7 @@
 										<th scope="col">Status</th>
 										<th scope="col">Driver</th>
 										<th scope="col">Team</th>
-										<th scope="col">Time</th>
+										<th scope="col">Lap Time</th>
 										<th scope="col">Lap</th>
 									</tr>
 								</thead>
@@ -178,10 +178,44 @@
 							<h5>Race Events</h5>
 						</div>
 					</div>
+					<div class="row marginTop1 raceEventsLabelSettings">
+						<div class="col-md-6" style="top:0;">
+							<div class="form-check" style="margin-left:-10px;">
+								<input class="form-check-input" type="checkbox" checked id="finished-event">
+								<label class="form-check-label" for="defaultCheck1">
+									Finished
+								</label>
+							</div>
+						</div>
+						<div class="col-md-6" style="top:0;">
+							<div class="form-check" id="abandoned-event" style="margin-left:-15px;">
+								<input class="form-check-input" type="checkbox" checked id="abandoned-event">
+								<label class="form-check-label" for="abandoned-event">
+									Abandoned
+								</label>
+							</div>
+						</div>
+					</div>
+					<div class="row marginTop1 raceEventsLabelSettings">
+						<div class="col-md-6" style="top:0;">
+							<div class="form-check" style="margin-left:-10px;">
+								<input class="form-check-input" type="checkbox" checked id="pitstop-event">
+								<label class="form-check-label" for="dsq-event">
+									Pit Stop
+								</label>
+							</div>
+						</div>
+						<div class="col-md-6" style="top:0;">
+							<div class="form-check" style="margin-left:-15px;">
+								<input class="form-check-input" type="checkbox" checked id="laps-event">
+								<label class="form-check-label" for="laps-event">
+									+ Lap(s)
+								</label>
+							</div>
+						</div>
+					</div>
 					<div class="row raceEventsListSettings">
-						<ul style="list-style:none" class="marginTop1 raceEventsList" id="raceEventsList">
-							
-						</ul>
+						<ul style="list-style:none" class="marginTop1 raceEventsList" id="raceEventsList"></ul>
 					</div>
 				</div>
 			</div>

@@ -97,6 +97,30 @@ function checkIfSliderCanBescrolled() {
 	return plbk.is(":visible");
 }
 
+//Check Button Events
+function isPistopEventChecked() {
+	return $('#pitstop-event').is(":checked");
+}
+function isFinishedEventChecked() {
+	return $('#finished-event').is(":checked");
+}
+function isAbandonedEventChecked() {
+	return $('#abandoned-event').is(":checked");
+}
+function isLapsEventChecked() {
+	return $('#laps-event').is(":checked");
+}
+function isStatusFinished(status){
+	return status.RaceStatusId === 1;
+}
+function isStatusAbandoned(status) {
+	return (status.RaceStatusId >= 1 && status.RaceStatusId <= 10) || (status.RaceStatusId >= 20 && status.RaceStatusId <= 44);
+}
+function isStatusLapsPlus(status) {
+	return status.RaceStatusId >= 11 && status.RaceStatusId <= 19;
+}
+
+
 //Local storage
 function updateSeasonFromLocalStorage() {
 	if (window.localStorage.getItem("selectedYear") && window.localStorage.getItem("selectedYear").length > 0) {

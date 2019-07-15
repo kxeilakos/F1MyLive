@@ -148,7 +148,7 @@
 	margin-left: -2em;
 }
 .raceEventsListSettings {
-	max-height: 1200px;
+	max-height: 1000px;
 	overflow-y: auto;
 	position: absolute;
 }
@@ -166,6 +166,9 @@
 .selectedDriverAndTeam{
 	color: darkblue;
 	font-weight: 700;
+}
+.disp-n{
+	display:none;
 }
 
 

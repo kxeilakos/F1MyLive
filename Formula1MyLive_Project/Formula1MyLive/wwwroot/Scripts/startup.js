@@ -163,6 +163,44 @@ $(document).ready(function () {
 			populateLiveTimingTable(null);
 		}, getInterval());
 	});
+
+	//9. Check Boxes' event
+	//9.1 Pistop
+	var showPitstopChk = $('#pitstop-event');
+	showPitstopChk.change(function () {
+		if ($(this).is(":checked")) {
+			showPitstops();
+		} else {
+			hidePitstops();
+		}
+	});
+	//9.2 Finished
+	var showFinishedChk = $('#finished-event');
+	showFinishedChk.change(function () {
+		if ($(this).is(":checked")) {
+			showFinished();
+		} else {
+			hideFinished();
+		}
+	});
+	//9.3 Laps +
+	var showLapsChk = $('#laps-event');
+	showLapsChk.change(function () {
+		if ($(this).is(":checked")) {
+			showLaps();
+		} else {
+			hideLaps();
+		}
+	});
+	//9.4 Abandoned
+	var showAbandonedChk = $('#abandoned-event');
+	showAbandonedChk.change(function () {
+		if ($(this).is(":checked")) {
+			showAbandoned();
+		} else {
+			hideAbandoned();
+		}
+	});
 });
 
 //Update DropDowns on selection

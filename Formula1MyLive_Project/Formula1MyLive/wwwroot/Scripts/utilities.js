@@ -119,7 +119,30 @@ function isStatusAbandoned(status) {
 function isStatusLapsPlus(status) {
 	return status.RaceStatusId >= 11 && status.RaceStatusId <= 19;
 }
+function showPitstops() {
 
+}
+function hidePitstops() {
+
+}
+function showFinished() {
+
+}
+function hideFinished() {
+
+}
+function showLaps() {
+
+}
+function hideLaps() {
+
+}
+function showAbandoned() {
+
+}
+function hideAbandoned() {
+
+}
 
 //Local storage
 function updateSeasonFromLocalStorage() {

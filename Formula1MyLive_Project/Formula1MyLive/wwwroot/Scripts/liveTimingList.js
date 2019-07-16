@@ -81,6 +81,7 @@ async function populateLiveTimingTable(data) {
 		}
 		//If user resumes Race Evolution skip Laps before current
 		if (+prop < +currentLap) continue;
+		if (+prop === -1) continue; // This is a special entry containing Race statistics and will be handled exclusively once the race is Finished
 
 		var driversList = lapTimesByLap[prop];
 		clearTable();
@@ -129,10 +130,14 @@ async function populateLiveTimingTable(data) {
 
 		await timer(interval);
 
-		if(+prop === totalLaps) {
+		if(+prop === totalLaps-1) {
 			stop = true;
 			raceInProgress = false;
 			handleStatusLabel("Race finished", "colorClassDown");
+
+			setTimeout(function () {
+				updateWeatherActionPanelWithStatisatics(lapTimesByLap[-1]);
+			}, interval);
 		}
 	}
 }

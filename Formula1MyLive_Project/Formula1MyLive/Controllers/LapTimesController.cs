@@ -282,6 +282,17 @@ namespace Formula1MyLive.Controllers
 			//	}
 			//}
 
+			LapTimeWithEvents statistics = new LapTimeWithEvents();
+			var fastestLapData = this.Results.Where(x => x.FastestLap != null).OrderBy(x => x.FastestLap).FirstOrDefault();
+			statistics.DriverName = this.Drivers[fastestLapData.DriverId].FirstName + " " + this.Drivers[fastestLapData.DriverId].LastName;
+			statistics.Lap = fastestLapData.Laps;                     // Fastest Lap
+			statistics.Time = fastestLapData.FastestLapTime;         // Fastest Lap Time
+			statistics.DriverNumber = fastestLapData.FastestLapSpeed;         // Fastest Lap Top Speed
+			statistics.Position = fastestLapData.Position.HasValue ? fastestLapData.Position.Value : (short)0;
+			List<LapTimeWithEvents> temp = new List<LapTimeWithEvents>();
+			temp.Add(statistics);
+
+			lapTimesByLap.Add(-1, temp.OrderBy(x=> x.Lap));
 			return lapTimesByLap;
 
 		}

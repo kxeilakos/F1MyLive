@@ -80,12 +80,12 @@ var updateWeatherSection = function (data) {
 		var wTempHigh = $('.wTempHigh');
 		wTempHigh.append('<img src="Icons/temperature-max.svg" class="settingsImgWeather" />');
 		wTempHigh.append('<br>');
-		wTempHigh.append(weatherData.temperatureHigh + ' °C');
+		wTempHigh.append(weatherData.temperatureHigh + '°C');
 
 		var wTempLow = $('.wTempLow');
 		wTempLow.append('<img src="Icons/temperature-min.svg" class="settingsImgWeather" />');
 		wTempLow.append('<br>');
-		wTempLow.append(weatherData.temperatureLow + ' °C');
+		wTempLow.append(weatherData.temperatureLow + '°C');
 
 		var wHumidity = $('.wHumidity');
 		wHumidity.append('<img src="Icons/humidity.svg" class="settingsImgWeather" />');
@@ -95,7 +95,7 @@ var updateWeatherSection = function (data) {
 		var wWindSpeed = $('.wWindSpeed');
 		wWindSpeed.append('<img src="Icons/flag-windy.svg" class="settingsImgWeather" />');
 		wWindSpeed.append('<br>');
-		wWindSpeed.append(weatherData.windSpeed + ' m/sec');
+		wWindSpeed.append(weatherData.windSpeed + 'm/sec');
 
 		handleStatusLabel("Race day weather report");
 	} else {
@@ -162,4 +162,30 @@ var clearWeatherActionPanel = function () {
 	wHumidity.empty();
 	var wWindSpeed = $('.wWindSpeed');
 	wWindSpeed.empty();
+};
+
+var updateWeatherActionPanelWithStatisatics = function (statistics) {
+	clearWeatherActionPanel();
+
+	var wIcon = $('.wIcon');
+	wIcon.append('Driver: ');
+	wIcon.append(statistics[0].DriverName);
+
+	var wTempHigh = $('.wTempHigh');
+	wTempHigh.append('Lap: ');
+	wTempHigh.append(statistics[0].Lap);
+
+	var wTempLow = $('.wTempLow');
+	wTempLow.append('Lap Time: ');
+	wTempLow.append(statistics[0].Time);
+
+	var wHumidity = $('.wHumidity');
+	wHumidity.append('Lap Speed: ');
+	wHumidity.append(statistics[0].DriverNumber);
+
+	var wWindSpeed = $('.wWindSpeed');
+	wWindSpeed.append('Position: ');
+	wWindSpeed.append(statistics[0].Position);
+
+	handleStatusLabel("Race Fastest: ", "colorClassData");
 };

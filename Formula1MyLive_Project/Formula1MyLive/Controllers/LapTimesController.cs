@@ -115,6 +115,9 @@ namespace Formula1MyLive.Controllers
 			//	collection.Add(LapTimeWithEvents);
 			//}
 
+			LapTime last = lapTimes.Last();
+			Dictionary<short, Result> resultsByDriver = this.Results.ToDictionary(x => x.DriverId);
+
 			foreach (LapTime lapTime in lapTimes)
 			{
 				LapTimeWithEvents LapTimeWithEvents = new LapTimeWithEvents();
@@ -127,20 +130,20 @@ namespace Formula1MyLive.Controllers
 				LapTimeWithEvents.DriverName = driver == null ? string.Empty : driver.FirstName + " " + driver.LastName;
 				LapTimeWithEvents.DriverNumber = driver == null ? string.Empty : driver.Number.ToString();
 
-				LapTimeWithEvents.Lap = lapTime.Lap;
-				LapTimeWithEvents.Position = lapTime.Position;
-				LapTimeWithEvents.Time = lapTime.Time;
-
 				LapTimeWithEvents.ConstructorId = GetConstructorId(qualifyings, LapTimeWithEvents.DriverId);
 				Constructor constructor = null;
 				this.Constructors.TryGetValue(LapTimeWithEvents.ConstructorId, out constructor);
 				LapTimeWithEvents.ConstructorName = constructor == null ? string.Empty : constructor.Name;
+				
+				LapTimeWithEvents.Lap = lapTime.Lap;
+				LapTimeWithEvents.Position = lapTime.Position;
+				LapTimeWithEvents.Time = lapTime.Time;
 
 				short raceStatusId = -1;
 				LapTimeWithEvents.HasPitstop = CheckPitStopForLapAndDriverOfRace(LapTimeWithEvents.DriverId, LapTimeWithEvents.Lap);
 				LapTimeWithEvents.RaceStatus = CheckResultForLapAndDriverOfRace(LapTimeWithEvents.DriverId, LapTimeWithEvents.Lap, out raceStatusId);
 				LapTimeWithEvents.RaceStatusId = raceStatusId;
-
+				
 				collection.Add(LapTimeWithEvents);
 
 			}
@@ -262,10 +265,45 @@ namespace Formula1MyLive.Controllers
 
 			short lapKey = lapTimesByLap.Keys.Last();
 			var lapTimesOfFinalLap = lapTimesByLap[lapKey];
+			List<Result> includedResults = new List<Result>();
 			foreach (LapTimeWithEvents lapTimeWithEvents in lapTimesOfFinalLap)
 			{
 				lapTimeWithEvents.PositionStatus = PositionStatus.NoChange;
+				Result result = null;
+				resultsByDriver.TryGetValue(lapTimeWithEvents.DriverId, out result);
+					if (result != null)
+					{
+						includedResults.Add(result);
+						lapTimeWithEvents.Lap = result.Laps;
+						lapTimeWithEvents.Position = result.Position.HasValue ? result.Position.Value : lapTimeWithEvents.Position;
+						lapTimeWithEvents.Time = GetTimeLabelOfDriver(result);
+					}
+					else
+					{
+						lapTimeWithEvents.Lap = lapTimeWithEvents.Lap;
+						lapTimeWithEvents.Position = lapTimeWithEvents.Position;
+						lapTimeWithEvents.Time = lapTimeWithEvents.Time;
+					}
 			}
+			List<Result> notIncludedResults = this.Results.Except(includedResults).ToList();
+			List<LapTimeWithEvents> extraDataOfFinalLap = new List<LapTimeWithEvents>();
+			foreach (Result notinlcuded in notIncludedResults)
+			{
+				LapTimeWithEvents tempIncl = new LapTimeWithEvents();
+				tempIncl.Lap = notinlcuded.Laps;
+				tempIncl.Position = notinlcuded.Position.HasValue ? notinlcuded.Position.Value : (short)1000;
+				tempIncl.Time = GetTimeLabelOfDriver(notinlcuded);
+				tempIncl.DriverId = notinlcuded.DriverId;
+				tempIncl.DriverName = this.Drivers[notinlcuded.DriverId].FirstName + " " + this.Drivers[notinlcuded.DriverId].LastName;
+				tempIncl.PositionStatus = PositionStatus.NoChange;
+
+				tempIncl.ConstructorId = GetConstructorId(qualifyings, tempIncl.DriverId);
+				Constructor constructor = null;
+				this.Constructors.TryGetValue(tempIncl.ConstructorId, out constructor);
+				tempIncl.ConstructorName = constructor == null ? string.Empty : constructor.Name;
+				extraDataOfFinalLap.Add(tempIncl);
+			}
+			lapTimesByLap.Add(1000, extraDataOfFinalLap.OrderBy(x => x.Position));
 
 			//foreach (KeyValuePair<short, IOrderedEnumerable<LapTimeWithEvents>> keyValuePair in lapTimesByLap)
 			//{
@@ -321,6 +359,33 @@ namespace Formula1MyLive.Controllers
 
 			return builder.ToString();
 		}
+
+		private string GetTimeLabelOfDriver(Result result)
+		{
+			string timeLabel = string.Empty;
+			if (result.Position.HasValue)
+			{
+				if(result.StatusId ==1)
+				{
+					return result.Time;
+				}
+				else
+				{
+					Status status = null;
+					this.Statuses.TryGetValue(result.StatusId.Value, out status);
+					return status == null ? string.Empty : status.Label;
+				}
+			}
+			else
+			{
+				Status status = null;
+				this.Statuses.TryGetValue(result.StatusId.Value, out status);
+				return status == null ? string.Empty : status.Label;
+			}
+
+			return timeLabel;
+		}
+
 		#endregion
 	}
 }

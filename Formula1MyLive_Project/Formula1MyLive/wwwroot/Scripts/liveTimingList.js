@@ -65,7 +65,7 @@ async function populateLiveTimingTable(data) {
 
 	if (data !== null) {
 		lapTimesByLap = data;
-		totalLaps = Object.keys(data).length;
+		totalLaps = Object.keys(data).length -2;
 		updateSliderWithRaceData(totalLaps);
 	}
 
@@ -81,7 +81,7 @@ async function populateLiveTimingTable(data) {
 		}
 		//If user resumes Race Evolution skip Laps before current
 		if (+prop < +currentLap) continue;
-		if (+prop === -1) continue; // This is a special entry containing Race statistics and will be handled exclusively once the race is Finished
+		if (+prop === -1 || +prop === 1000) continue; // These are 2 special entries containing Race statistics and will be handled exclusively once the race is Finished
 
 		var driversList = lapTimesByLap[prop];
 		clearTable();
@@ -130,10 +130,16 @@ async function populateLiveTimingTable(data) {
 
 		await timer(interval);
 
-		if(+prop === totalLaps-1) {
+		if(+prop === totalLaps) {
 			stop = true;
 			raceInProgress = false;
 			handleStatusLabel("Race finished", "colorClassDown");
+			tableBody = getTableBody();
+			var extraDataOfFinalLap = lapTimesByLap[1000];
+			for (var l = 0; l < extraDataOfFinalLap.length; l++) {
+				row = generateLiveTimingTableRow(extraDataOfFinalLap[l]);
+				tableBody.append(row);
+			}
 
 			setTimeout(function () {
 				updateWeatherActionPanelWithStatisatics(lapTimesByLap[-1]);
@@ -151,7 +157,7 @@ function generateLiveTimingTableRow(rowData) {
 	var row = $('<tr>');
 	row.attr('id', rowData.Lap + "#" + rowData.DriverName);
 	var th = $('<th scope="row">');
-	th.append(rowData.Position);
+	th.append(rowData.Position < 1000 ? rowData.Position : "");
 	var tdPositionStatus = $('<td>');
 	var positionStatusIcon = getPositionStatusIcon(rowData.PositionStatus);
 	tdPositionStatus.append(positionStatusIcon);
@@ -279,7 +285,7 @@ function generateRaceEventsListStatusItem(rowData) {
 	var selectedDriverId = getSelectedDriverId();
 
 	var eventIcon = $('<img>');
-	if (rowData.RaceStatusId === 1) {
+	if (rowData.RaceStatusId === 1 || isStatusLapsPlus(rowData.RaceStatusId)) {
 		eventIcon.attr("src", "./Icons/racing-flag.svg");
 	} else {
 		eventIcon.attr("src", "./Icons/warning.svg");

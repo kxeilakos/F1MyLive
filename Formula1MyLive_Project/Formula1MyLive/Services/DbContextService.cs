@@ -10,10 +10,10 @@ namespace Formula1MyLive.Services
 
 		public DbSet<Circuit> Circuit { get; set; }
 		public DbSet<Constructor> Constructor { get; set; }
-		public DbSet<ConstructorResult> ConstructorResult { get; set; }
-		public DbSet<ConstructorStanding> ConstructorStanding { get; set; }
+		//public DbSet<ConstructorResult> ConstructorResult { get; set; }
+		//public DbSet<ConstructorStanding> ConstructorStanding { get; set; }
 		public DbSet<Driver> Driver { get; set; }
-		public DbSet<DriverStanding> DriverStanding { get; set; }
+		//public DbSet<DriverStanding> DriverStanding { get; set; }
 		public DbSet<LapTime> LapTime { get; set; }
 		public DbSet<PitStop> PitStop { get; set; }
 		public DbSet<Qualifying> Qualifying { get; set; }

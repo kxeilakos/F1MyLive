@@ -102,20 +102,25 @@ async function populateLiveTimingTable(data) {
 			}
 			if (rowData.RaceStatus && rowData.RaceStatus.length>0) {
 				var raceStatusItem = generateRaceEventsListStatusItem(rowData);
+
 				if (!isFinishedEventChecked() && isStatusFinished(rowData.RaceStatusId)) raceStatusItem.addClass('disp-n');
-				if (isStatusFinished(rowData.RaceStatusId)) raceStatusItem.addClass('status-finished');
+				if (isStatusFinished(rowData.RaceStatusId) || isStatusLapsPlus(status)) raceStatusItem.addClass('status-finished');
 
 				if (!isAbandonedEventChecked() && isStatusAbandoned(rowData.RaceStatusId))  raceStatusItem.addClass('disp-n'); 
 				if (isStatusAbandoned(rowData.RaceStatusId)) raceStatusItem.addClass('status-abandoned');
 
-				if (!isLapsEventChecked() && isStatusLapsPlus(rowData.RaceStatusId)) raceStatusItem.addClass('disp-n');
-				if (isStatusLapsPlus(rowData.RaceStatusId)) raceStatusItem.addClass('status-laps');
+				//if (!isOvertakeEventChecked() && isStatusLapsPlus(rowData.RaceStatusId)) raceStatusItem.addClass('disp-n');
+				//if (isStatusLapsPlus(rowData.RaceStatusId)) raceStatusItem.addClass('status-laps');
 
 				raceListEvents.prepend(raceStatusItem);
 			}
 			if (rowData.OvertakeLabels !== null) {
 				for (var k = 0; k < rowData.OvertakeLabels.length; k++) {
 					var overTakeItem = generateRaceEventsListOvertakeItem(rowData.Lap, rowData.OvertakeLabels[k], rowData.DriverId);
+
+					if (!isOvertakeEventChecked()) overTakeItem.addClass('disp-n');
+					overTakeItem.addClass('status-overtakes');
+
 					raceListEvents.prepend(overTakeItem);
 				}
 			}

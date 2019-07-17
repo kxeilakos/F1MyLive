@@ -107,8 +107,8 @@ function isFinishedEventChecked() {
 function isAbandonedEventChecked() {
 	return $('#abandoned-event').is(":checked");
 }
-function isLapsEventChecked() {
-	return $('#laps-event').is(":checked");
+function isOvertakeEventChecked() {
+	return $('#overtake-event').is(":checked");
 }
 function isStatusFinished(status){
 	return status === 1;
@@ -143,14 +143,14 @@ function hideFinished() {
 		$(items[k]).hide();
 	}
 }
-function showLaps() {
-	var items = $('.status-laps');
+function showOvertakes() {
+	var items = $('.status-overtakes');
 	for (var k = 0; k < items.length; k++) {
 		$(items[k]).show();
 	}
 }
-function hideLaps() {
-	var items = $('.status-laps');
+function hideOvertakes() {
+	var items = $('.status-overtakes');
 	for (var k = 0; k < items.length; k++) {
 		$(items[k]).hide();
 	}

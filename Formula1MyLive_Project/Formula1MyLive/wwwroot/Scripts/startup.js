@@ -183,13 +183,13 @@ $(document).ready(function () {
 			hideFinished();
 		}
 	});
-	//9.3 Laps +
-	var showLapsChk = $('#laps-event');
-	showLapsChk.change(function () {
+	//9.3 Overtakes
+	var showOvertakesChk = $('#overtake-event');
+	showOvertakesChk.change(function () {
 		if ($(this).is(":checked")) {
-			showLaps();
+			showOvertakes();
 		} else {
-			hideLaps();
+			hideOvertakes();
 		}
 	});
 	//9.4 Abandoned

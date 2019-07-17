@@ -187,5 +187,5 @@ var updateWeatherActionPanelWithStatisatics = function (statistics) {
 	wWindSpeed.append('Position: ');
 	wWindSpeed.append(statistics[0].Position);
 
-	handleStatusLabel("Race Fastest: ", "colorClassData");
+	handleStatusLabel("Fastest Lap: ", "colorClassData");
 };
